@@ -22,12 +22,32 @@ dependencyResolutionManagement {
 ###  `build.gradle (App)`
 ```groovy
 dependencies {
-	        implementation 'com.github.TrullyAI:TrullySDK:TAG'
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation('com.github.TrullyAI:FaceAPI:5.2.2715')
+    implementation('com.github.TrullyAI:FaceCore:5.2.232')
+    implementation('com.github.TrullyAI:CommonAPI:6.9.1398')
+    implementation('com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555')
+    implementation('com.github.TrullyAI:DocumentReaderAPI:6.9.9406')
+    implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.1'
 }
 ```
 
 
 ## Configure SDK
+
+The project requires the use of viewBinding, please add your build.gradle(App)
+```groovy
+
+android {
+    viewBinding {
+        enable = true
+    }
+}
+```
+
+
 
 ### Initialize
 
