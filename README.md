@@ -31,6 +31,7 @@ dependencies {
     implementation 'com.github.TrullyAI:CommonAPI:6.9.1398'
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
     implementation 'com.github.TrullyAI:DocumentReaderAPI:6.9.9406'
+    implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.5'
 }
 ```
 
