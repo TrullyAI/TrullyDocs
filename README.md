@@ -22,16 +22,15 @@ dependencyResolutionManagement {
 ###  `build.gradle (App)`
 ```groovy
 dependencies {
-    implementation group: 'com.google.android.gms', name: 'play-services-vision', version: '20.1.3'
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
-    implementation('com.github.TrullyAI:FaceAPI:3.2.1679')
-    implementation('com.github.TrullyAI:FaceCore:5.2.232')
-    implementation('com.github.TrullyAI:CommonAPI:6.9.1398')
-    implementation('com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555')
-    implementation('com.github.TrullyAI:DocumentReaderAPI:6.9.9406')
-    implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.2'
+
+    implementation 'com.github.TrullyAI:FaceAPI:5.2.2715'
+    implementation 'com.github.TrullyAI:FaceCore:5.2.232'
+    implementation 'com.github.TrullyAI:CommonAPI:6.9.1398'
+    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
+    implementation 'com.github.TrullyAI:DocumentReaderAPI:6.9.9406'
 }
 ```
 
@@ -63,7 +62,7 @@ For production environments use `Environment.RELEASE`.
 ```java
   private fun initialize() {
         val config: TrullyConfig = TrullyConfig(Environment.DEBUG)
-        TrullySdk.init(packageContext,config)
+        TrullySdk.init(packageContext, apiKey, config)
     }
 ```
 
