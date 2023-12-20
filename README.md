@@ -2,7 +2,7 @@
 
 ## Add TrullySDK repository and dependencies
 
-### Add jitpack as repository store in `settings.gradle`
+### 1.- Add jitpack as repository store in `settings.gradle`
 
 #### Kotlin DSL
 
@@ -38,7 +38,7 @@ dependencyResolutionManagement {
 }
 ```
 
-### Add dependencies to the App level `build.gradle`
+### 2.- Add dependencies to the App level `build.gradle`
 
 #### Kotlin DSL
 
@@ -88,7 +88,7 @@ dependencies {
 }
 ```
 
-### Add permission in manifest
+### 3.- Add permission in manifest
 
 ```xml
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
