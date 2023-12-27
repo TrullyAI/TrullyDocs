@@ -476,7 +476,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
     private fun initialize() {
         val config = TrullyConfig(Environment.DEBUG)
 
-        TrullySdk.init(this, "9zODjQTn8G5QiyKy1swg3aehp3x96zgQ7MNbQq3z", config)
+        TrullySdk.init(this, "YOUR_API_KEY", config)
         TrullySdk.start(this, this)
     }
 }
