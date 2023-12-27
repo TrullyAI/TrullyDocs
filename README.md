@@ -48,8 +48,10 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
 
-    //We use retrofit to handle http requests. Add this if you don't already have it in your project
+    //We use viewbinding. Add this if you don't already have it in your project
     implementation("androidx.databinding:viewbinding:8.1.4")
+
+    //We use retrofit to handle http requests. Add this if you don't already have it in your project
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
@@ -72,8 +74,10 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
 
-    //We use retrofit to handle http requests. Add this if you don't already have it in your project
+    //We use viewbinding. Add this if you don't already have it in your project
     implementation 'androidx.databinding:viewbinding:8.1.4'
+
+    //We use retrofit to handle http requests. Add this if you don't already have it in your project
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
@@ -91,6 +95,8 @@ dependencies {
 ### 3.- Add permission in manifest
 
 ```xml
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -113,7 +119,7 @@ members so you can have access to the response.
 | `onError`  | Catch the errors of the operation.  |
 
 ```java
-class MainActivity : AppCompactActivity(), TrullyResultListener {
+class MainActivity : AppCompatActivity(), TrullyResultListener {
 
     override fun onResult(response: AppData) {
         TODO("On completed logic")
@@ -170,15 +176,13 @@ To start the SDK you'll need to call the `start` method.
 | `listener`       | Is the TrullyResultListener of your Application/activity. |
 
 ```java
-private fun onLaunchTrully() {
-        TrullySdk.start(packageContext, listener)
-}
+    TrullySdk.start(packageContext, listener)
 ```
 
 ### Full Example
 
 ```java
-class MainActivity : AppCompactActivity(), TrullyResultListener {
+class MainActivity : AppCompatActivity(), TrullyResultListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
