@@ -225,3 +225,259 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     }
 }
 ```
+
+## Shrinking App
+
+To reduce the App size you can implement Dynamic Feature Modules generate an
+on-demand installation of **DocumentReaderFullAuth** and **FaceCore**
+
+⚠️ The .aab size will not be reduced but Google Play will manage the files so
+the download size will be reduced
+
+### 1.- Create a new Dynamic Module
+
+You can create a new Dynamic Module with Android Studio using **File > New > New
+Module** this will open a window. Select Dynamic Feature and choose a name for
+your module then click next. The next window will ask to create a Module Title
+and to choose how you would like to include the module. We recommend to choose
+**Do not include module at install-time (on-demand only)** because it will let
+you decide when you want to start the download. This action will generate some
+changes to your app
+
+#### `settings.gradle`
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+
+    repositories {
+        google()
+        mavenCentral()
+
+        maven {
+            url = uri("https://jitpack.io")
+        }
+    }
+}
+
+rootProject.name = "Your Application Name"
+include(":app")
+include(":your_module_name")
+```
+
+#### App level `build.gradle`
+
+```groovy
+android {
+    //...other configurations
+    dynamicFeatures += ":your_module_name"
+}
+```
+
+### 2.- Add android.play to the App level `build.gradle`
+
+#### Kotlin DSL
+
+```groovy
+dependencies {
+    implementation("com.google.android.play:core-ktx:1.8.1")
+}
+```
+
+#### Groovy DSL
+
+```groovy
+dependencies {
+    implementation 'com.google.android.play:core-ktx:1.8.1'
+}
+```
+
+### 3.- Add split android.play SplitCompatApplication to the App manifest
+
+```xml
+    <application
+        android:name="com.google.android.play.core.splitcompat.SplitCompatApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyApplication"
+        tools:targetApi="31">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+```
+
+### 4.- Move DocumentReaderFullAuth and FaceCore dependencies to your new module `build.gradle`
+
+#### App level `build.gradle` dependencies
+
+##### Kotlin DSL
+
+```groovy
+dependencies {
+    //android.play so we can use SplitCompat
+    implementation("com.google.android.play:core-ktx:1.8.1")
+
+    //SDK dependencies without DocumentReaderFullAuth and FaceCore
+    implementation("androidx.databinding:viewbinding:8.1.4")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation("com.github.TrullyAI:FaceAPI:5.2.2715")
+    implementation("com.github.TrullyAI:CommonAPI:6.9.1398")
+    implementation("com.github.TrullyAI:DocumentReaderAPI:6.9.9406")
+    implementation("com.github.TrullyAI:TrullyKotlinSDK:0.0.14")
+}
+```
+
+##### Groovy DSL
+
+```groovy
+dependencies {
+    implementation 'com.google.android.play:core-ktx:1.8.1'
+
+    //SDK dependencies without DocumentReaderFullAuth and FaceCore
+    implementation 'androidx.databinding:viewbinding:8.1.4'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation 'com.github.TrullyAI:FaceAPI:5.2.2715'
+    implementation 'com.github.TrullyAI:CommonAPI:6.9.1398'
+    implementation 'com.github.TrullyAI:DocumentReaderAPI:6.9.9406'
+    implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.14'
+}
+```
+
+#### Module level `build.gradle` dependencies
+
+##### Kotlin DSL
+
+```groovy
+dependencies {
+    implementation("com.github.TrullyAI:FaceCore:5.2.232")
+    implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
+}
+```
+
+##### Groovy DSL
+
+```groovy
+dependencies {
+    implementation 'com.github.TrullyAI:FaceCore:5.2.232'
+    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
+}
+```
+
+### 5.- Configure an Activity to init the download
+
+#### Full Example
+
+```java
+class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStateUpdatedListener {
+    //variable to store the SplitInstallManager instance
+    private lateinit var installManager: SplitInstallManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        //Generate SplitInstallManager instance
+        installManager = SplitInstallManagerFactory.create(applicationContext)
+        //Register Activity as listener
+        installManager.registerListener(this)
+
+        findViewById<Button>(R.id.launchTrully)
+            .setOnClickListener {
+                onTap()
+            }
+    }
+
+    //Start download
+    private fun onTap() {
+        installManager.startInstall(
+            SplitInstallRequest.newBuilder()
+                .addModule("your_module_name")
+                .build()
+        )
+    }
+
+    //Delete all unnecessary data when Activity is destroy
+    override fun onDestroy() {
+        installManager.unregisterListener(this)
+        installManager.deferredUninstall(listOf("your_module_name"))
+        super.onDestroy()
+    }
+
+    //Configure the actions for the different states
+    override fun onStateUpdate(state: SplitInstallSessionState) {
+        when (state.status()) {
+            //This state is required for every module larger than 10MB. You'll need it in this case
+            SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
+                installManager.startConfirmationDialogForResult(state, this, 123)
+                Toast.makeText(this, "Request State", Toast.LENGTH_SHORT).show()
+            }
+            SplitInstallSessionStatus.INSTALLED -> {
+                initialize()
+                Toast.makeText(this, "Install State", Toast.LENGTH_SHORT).show()
+            }
+            SplitInstallSessionStatus.FAILED -> {
+                Toast.makeText(this, "Failed State", Toast.LENGTH_SHORT).show()
+            }
+
+            SplitInstallSessionStatus.CANCELED -> {
+                Toast.makeText(this, "Canceled State", Toast.LENGTH_SHORT).show()
+            }
+
+            SplitInstallSessionStatus.CANCELING -> {
+                Toast.makeText(this, "Canceling State", Toast.LENGTH_SHORT).show()
+            }
+
+            SplitInstallSessionStatus.DOWNLOADED -> {
+                Toast.makeText(this, "Downloaded State", Toast.LENGTH_SHORT).show()
+            }
+
+            SplitInstallSessionStatus.DOWNLOADING -> {
+                Toast.makeText(this, "Downloading State", Toast.LENGTH_SHORT).show()
+            }
+
+            SplitInstallSessionStatus.INSTALLING -> {
+                Toast.makeText(this, "Installing State", Toast.LENGTH_SHORT).show()
+            }
+
+            SplitInstallSessionStatus.PENDING -> {
+                Toast.makeText(this, "Pending State", Toast.LENGTH_SHORT).show()
+            }
+
+            SplitInstallSessionStatus.UNKNOWN -> {
+                Toast.makeText(this, "Unknown State", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onResult(response: AppData) {
+        Log.i("response", "finish")
+    }
+
+    override fun onError() {
+        Log.i("response", "error")
+    }
+
+    private fun initialize() {
+        val config = TrullyConfig(Environment.DEBUG)
+
+        TrullySdk.init(this, "9zODjQTn8G5QiyKy1swg3aehp3x96zgQ7MNbQq3z", config)
+        TrullySdk.start(this, this)
+    }
+}
+```
