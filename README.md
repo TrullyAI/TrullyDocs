@@ -234,6 +234,9 @@ on-demand installation of **DocumentReaderFullAuth** and **FaceCore**
 ⚠️ The .aab size will not be reduced but Google Play will manage the files so
 the download size will be reduced
 
+⚠️ Make sure to download the Dynamic Feature Module before initializing
+TrullySDK
+
 ### 1.- Create a new Dynamic Module
 
 You can create a new Dynamic Module with Android Studio using **File > New > New
