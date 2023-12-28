@@ -228,8 +228,9 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
 ## Shrinking App
 
-To reduce the App size you can implement Dynamic Feature Modules generate an
-on-demand installation of **DocumentReaderFullAuth** and **FaceCore**
+To reduce the App download size you can implement Dynamic Feature Modules to
+generate an on-demand installation of **DocumentReaderFullAuth** and
+**FaceCore**
 
 ⚠️ The .aab size will not be reduced but Google Play will manage the files so
 the download size will be reduced
@@ -237,15 +238,15 @@ the download size will be reduced
 ⚠️ Make sure to download the Dynamic Feature Module before initializing
 TrullySDK
 
-### 1.- Create a new Dynamic Module
+### 1.- Create a new Dynamic Feature Module
 
-You can create a new Dynamic Module with Android Studio using **File > New > New
-Module** this will open a window. Select Dynamic Feature and choose a name for
-your module then click next. The next window will ask to create a Module Title
-and to choose how you would like to include the module. We recommend to choose
-**Do not include module at install-time (on-demand only)** because it will let
-you decide when you want to start the download. This action will generate some
-changes to your app
+You can create a new Dynamic Feature Module with Android Studio using **File >
+New > New Module** this will open a window. Select Dynamic Feature and choose a
+name for your module then click next. The next window will ask to create a
+Module Title and to choose how you would like to include the module. We
+recommend to choose **Do not include module at install-time (on-demand only)**
+because it will let you decide when you want to start the download. This action
+will generate some changes to your app
 
 #### `settings.gradle`
 
