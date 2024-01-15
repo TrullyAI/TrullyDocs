@@ -226,6 +226,26 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 }
 ```
 
+## Reading Results
+
+### Decision Maker Response
+
+```java
+class MainActivity : AppCompatActivity(), TrullyResultListener {
+    override fun onResult(response: AppData) {
+        //Trully Decision Data
+        Log.d("TRULLY_SDK", response.decisionMaker?.data?.request_id.toString())
+        Log.d("TRULLY_SDK", response.decisionMaker?.data?.label.toString())
+        Log.d("TRULLY_SDK", response.decisionMaker?.data?.reason.toString())
+
+        //Images - base64 string
+        Log.d("TRULLY_SDK", response.images?.documentStr.toString())
+        Log.d("TRULLY_SDK", response.images?.documentBackStr.toString())
+        Log.d("TRULLY_SDK", response.images?.selfieStr.toString())
+    }
+}
+```
+
 ## Shrinking App
 
 To reduce the App download size you can implement Dynamic Feature Modules to
