@@ -210,10 +210,10 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         styles.primaryColor = ai.trully.sdk.R.color.primary
         styles.logo = ai.trully.sdk.R.drawable.logo
 
-        styles.cameraStyle.cameraScreenSectorTarget = ai.trully.sdk.R.color.primary
-        styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary
-        styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary
-        styles.cameraStyle.cameraScreenStrokeNormal = ai.trully.sdk.R.color.primary
+        styles.cameraStyle.cameraScreenSectorTarget = ai.trully.sdk.R.color.primary_50
+        styles.cameraStyle.cameraScreenStrokeNormal = ai.trully.sdk.R.color.primary_50
+        styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary_75
+        styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary_75
 
         val config = TrullyConfig(Environment.DEBUG, styles)
 
