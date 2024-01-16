@@ -225,7 +225,8 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
 ### Decision Maker Response
 
-You'll find more details in https://trully.readme.io/docs/decision-maker-1
+You'll find more details in
+[Decision Maker Response Docs](https://trully.readme.io/docs/decision-maker-1)
 
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener {
