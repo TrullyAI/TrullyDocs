@@ -123,11 +123,6 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
     override fun onResult(response: AppData) {
         TODO("On completed logic")
-        //AppData.decisionMaker -> The result of the process. You'll find more details in https://trully.readme.io/docs/decision-maker-1
-        //AppData.images - base64 for the different images obtained during the process
-            //AppData.images?.documentBackStr - Will return the back image of the document
-            //AppData.images?.documentStr - Will return the front image of the document
-            //AppData.images?.selfieStr - Will return the selfie
     }
 
     override fun onError() {
@@ -230,10 +225,13 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
 ### Decision Maker Response
 
+You'll find more details in https://trully.readme.io/docs/decision-maker-1
+
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener {
     override fun onResult(response: AppData) {
         //Trully Decision Data
+        Log.d("TRULLY_SDK", response.decisionMaker.toString())
         Log.d("TRULLY_SDK", response.decisionMaker?.data?.request_id.toString())
         Log.d("TRULLY_SDK", response.decisionMaker?.data?.label.toString())
         Log.d("TRULLY_SDK", response.decisionMaker?.data?.reason.toString())
