@@ -238,9 +238,11 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         Log.d("TRULLY_SDK", response.decisionMaker?.data?.reason.toString())
 
         //Images - base64 string
-        Log.d("TRULLY_SDK", response.images?.documentStr.toString())
-        Log.d("TRULLY_SDK", response.images?.documentBackStr.toString())
-        Log.d("TRULLY_SDK", response.images?.selfieStr.toString())
+        Log.d("TRULLY_SDK", response.images?.selfieStr.toString()) //Selfie
+        Log.d("TRULLY_SDK", response.images?.documentStr.toString()) //Cropped document front
+        Log.d("TRULLY_SDK", response.images?.documentBackStr.toString()) //Cropped document back
+        Log.d("TRULLY_SDK", response.images?.documentCompleteStr.toString()) //Uncropped document front
+        Log.d("TRULLY_SDK", response.images?.documentBackCompleteStr.toString()) //Uncropped document back
     }
 }
 ```
