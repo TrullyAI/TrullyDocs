@@ -121,7 +121,7 @@ members so you can have access to the response.
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener {
 
-    override fun onResult(response: AppData) {
+    override fun onResult(response: TrullyResponse) {
         TODO("On completed logic")
     }
 
@@ -189,7 +189,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
             }
     }
 
-    override fun onResult(response: AppData) {
+    override fun onResult(response: TrullyResponse) {
         TODO("On completed logic")
     }
 
@@ -228,14 +228,23 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 You'll find more details in
 [Decision Maker API Docs](https://trully.readme.io/reference/decisionmakerpredict)
 
+| Object          | Description                                             |
+| --------------- | ------------------------------------------------------- |
+| `decisionMaker` | Contains the complete Decision Maker response.          |
+| `images`        | Contains the document images and the selfie image.      |
+| `shortResponse` | Contains the basic data of the Decision Maker response. |
+
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener {
-    override fun onResult(response: AppData) {
-        //Trully Decision Data
+    override fun onResult(response: TrullyResponse) {
+        //Complete Decision Maker response
         Log.d("TRULLY_SDK", response.decisionMaker.toString())
-        Log.d("TRULLY_SDK", response.decisionMaker?.data?.request_id.toString())
-        Log.d("TRULLY_SDK", response.decisionMaker?.data?.label.toString())
-        Log.d("TRULLY_SDK", response.decisionMaker?.data?.reason.toString())
+
+        //Short response
+        Log.d("TRULLY_SDK", response.shortResponse?.request_id.toString())
+        Log.d("TRULLY_SDK", response.shortResponse?.label.toString())
+        Log.d("TRULLY_SDK", response.shortResponse?.reason.toString())
+        Log.d("TRULLY_SDK", response.shortResponse?.request_date.toString()) //UTC timestamp
 
         //Images - base64 string
         Log.d("TRULLY_SDK", response.images?.selfieStr.toString()) //Selfie
@@ -490,7 +499,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
         }
     }
 
-    override fun onResult(response: AppData) {
+    override fun onResult(response: TrullyResponse) {
         Log.i("response", "finish")
     }
 
