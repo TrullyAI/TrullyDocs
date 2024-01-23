@@ -48,6 +48,9 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.10.0")
 
+    //We use threeten to make sure we can use Instant on API level 21. Add this if you don't already have it in your project
+    implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
+
     //We use viewbinding. Add this if you don't already have it in your project
     implementation("androidx.databinding:viewbinding:8.1.4")
 
@@ -73,6 +76,9 @@ dependencies {
     //if you're using JetPack make sure to add this two dependencies otherwise you'll get resource missing error
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
+
+    //We use threeten to make sure we can use Instant on API level 21. Add this if you don't already have it in your project
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
 
     //We use viewbinding. Add this if you don't already have it in your project
     implementation 'androidx.databinding:viewbinding:8.1.4'
@@ -364,6 +370,7 @@ dependencies {
     implementation("com.google.android.play:core-ktx:1.8.1")
 
     //SDK dependencies without DocumentReaderFullAuth and FaceCore
+    implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
     implementation("androidx.databinding:viewbinding:8.1.4")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -382,6 +389,7 @@ dependencies {
     implementation 'com.google.android.play:core-ktx:1.8.1'
 
     //SDK dependencies without DocumentReaderFullAuth and FaceCore
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
     implementation 'androidx.databinding:viewbinding:8.1.4'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
