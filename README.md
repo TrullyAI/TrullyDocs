@@ -154,11 +154,11 @@ To configure texts use the uiTexts object
 
 Texts enums
 
-| Parameter    | Value                   |
-| ------------ | ----------------------- |
-| INE_PASSPORT | INE o Pasaporte vigente |
-| INE          | INE vigente             |
-| PASSPORT     | Pasaporte vigente       |
+| Parameter      | Value                   |
+| -------------- | ----------------------- |
+| `INE_PASSPORT` | INE o Pasaporte vigente |
+| `INE`          | INE vigente             |
+| `PASSPORT`     | Pasaporte vigente       |
 
 ```java
   private fun initialize() {
