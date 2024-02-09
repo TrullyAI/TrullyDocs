@@ -139,16 +139,30 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
 ### Configure and initialize
 
-| Parameter        | Description                                                          |
-| ---------------- | -------------------------------------------------------------------- |
-| `packageContext` | Is the context of your Application/Activity.                         |
-| `apiKey`         | You're client API_KEY. The SDK won't work without it                 |
-| `styles`         | Styles object that will allow you to config color and logo. Optional |
-| `config`         | Config object will pass the environment and the styles to the SDK    |
+| Parameter        | Description                                                                 |
+| ---------------- | --------------------------------------------------------------------------- |
+| `packageContext` | Is the context of your Application/Activity.                                |
+| `apiKey`         | You're client API_KEY. The SDK won't work without it                        |
+| `styles`         | Styles object that will allow you to config color, logo and texts. Optional |
+| `config`         | Config object will pass the environment and the styles to the SDK           |
+
+To configure texts use the uiTexts object
+
+| Value     | Description                                                                       |
+| --------- | --------------------------------------------------------------------------------- |
+| `docType` | What type of document the user need to complete de process. One of the Texts enum |
+
+Texts enums
+
+| Parameter    | Value                   |
+| ------------ | ----------------------- |
+| INE_PASSPORT | INE o Pasaporte vigente |
+| INE          | INE vigente             |
+| PASSPORT     | Pasaporte vigente       |
 
 ```java
   private fun initialize() {
-    //Optionally change color and logo
+    //Optionally change color, logo and texts
     val styles: TrullyStyles = TrullyStyles()
 
     styles.primaryColor = ai.trully.sdk.R.color.primary
@@ -158,6 +172,8 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary
     styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary
     styles.cameraStyle.cameraScreenStrokeNormal = ai.trully.sdk.R.color.primary
+
+    styles.uiTexts.docType = Texts.INE
 
     //Set SDK configuration
     val config = TrullyConfig(Environment.DEBUG, styles) //For production environments use `Environment.RELEASE`.
