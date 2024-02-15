@@ -44,27 +44,9 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
-    //if you're using JetPack make sure to add this two dependencies otherwise you'll get resource missing error
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
-
-    //We use threeten to make sure we can use Instant on API level 21. Add this if you don't already have it in your project
-    implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
-
-    //We use viewbinding. Add this if you don't already have it in your project
-    implementation("androidx.databinding:viewbinding:8.1.4")
-
-    //We use retrofit to handle http requests. Add this if you don't already have it in your project
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
-
     //This are the dependencies that makes our SDK
-    implementation("com.github.TrullyAI:FaceAPI:5.2.2715")
     implementation("com.github.TrullyAI:FaceCore:5.2.232")
-    implementation("com.github.TrullyAI:CommonAPI:6.9.1398")
     implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
-    implementation("com.github.TrullyAI:DocumentReaderAPI:6.9.9406")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:0.0.14")
 }
 ```
@@ -73,27 +55,9 @@ dependencies {
 
 ```groovy
 dependencies {
-    //if you're using JetPack make sure to add this two dependencies otherwise you'll get resource missing error
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.10.0'
-
-    //We use threeten to make sure we can use Instant on API level 21. Add this if you don't already have it in your project
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
-
-    //We use viewbinding. Add this if you don't already have it in your project
-    implementation 'androidx.databinding:viewbinding:8.1.4'
-
-    //We use retrofit to handle http requests. Add this if you don't already have it in your project
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
-
     //This are the dependencies that makes our SDK
-    implementation 'com.github.TrullyAI:FaceAPI:5.2.2715'
     implementation 'com.github.TrullyAI:FaceCore:5.2.232'
-    implementation 'com.github.TrullyAI:CommonAPI:6.9.1398'
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
-    implementation 'com.github.TrullyAI:DocumentReaderAPI:6.9.9406'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.14'
 }
 ```
@@ -389,14 +353,6 @@ dependencies {
     implementation("com.google.android.play:core-ktx:1.8.1")
 
     //SDK dependencies without DocumentReaderFullAuth and FaceCore
-    implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
-    implementation("androidx.databinding:viewbinding:8.1.4")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
-    implementation("com.github.TrullyAI:FaceAPI:5.2.2715")
-    implementation("com.github.TrullyAI:CommonAPI:6.9.1398")
-    implementation("com.github.TrullyAI:DocumentReaderAPI:6.9.9406")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:0.0.14")
 }
 ```
@@ -405,17 +361,10 @@ dependencies {
 
 ```groovy
 dependencies {
+    //android.play so we can use SplitCompat
     implementation 'com.google.android.play:core-ktx:1.8.1'
 
     //SDK dependencies without DocumentReaderFullAuth and FaceCore
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.3.1'
-    implementation 'androidx.databinding:viewbinding:8.1.4'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
-    implementation 'com.github.TrullyAI:FaceAPI:5.2.2715'
-    implementation 'com.github.TrullyAI:CommonAPI:6.9.1398'
-    implementation 'com.github.TrullyAI:DocumentReaderAPI:6.9.9406'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.14'
 }
 ```
