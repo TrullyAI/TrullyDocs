@@ -44,6 +44,10 @@ dependencyResolutionManagement {
 
 ```groovy
 dependencies {
+    //if you're using JetPack make sure to add this two dependencies otherwise you'll get resource missing error
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.10.0")
+
     //This are the dependencies that makes our SDK
     implementation("com.github.TrullyAI:FaceCore:5.2.232")
     implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
@@ -55,6 +59,10 @@ dependencies {
 
 ```groovy
 dependencies {
+    //if you're using JetPack make sure to add this two dependencies otherwise you'll get resource missing error
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+
     //This are the dependencies that makes our SDK
     implementation 'com.github.TrullyAI:FaceCore:5.2.232'
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
