@@ -139,12 +139,13 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
 ### Configure and initialize
 
-| Parameter        | Description                                                                 |
-| ---------------- | --------------------------------------------------------------------------- |
-| `packageContext` | Is the context of your Application/Activity.                                |
-| `apiKey`         | You're client API_KEY. The SDK won't work without it                        |
-| `styles`         | Styles object that will allow you to config color, logo and texts. Optional |
-| `config`         | Config object will pass the environment and the styles to the SDK           |
+| Parameter        | Description                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------ |
+| `packageContext` | Is the context of your Application/Activity.                                                           |
+| `apiKey`         | You're client API_KEY. The SDK won't work without it                                                   |
+| `config`         | Config object will pass the environment and the styles to the SDK                                      |
+| `externalID`     | Will allow you to link the process to an ID generate by you for better track of each process. Optional |
+| `styles`         | Styles object that will allow you to config color, logo and texts. Optional                            |
 
 To configure texts use the uiTexts object
 
@@ -176,7 +177,9 @@ Texts enums
     styles.uiTexts.docType = Texts.INE
 
     //Set SDK configuration
-    val config = TrullyConfig(Environment.DEBUG, styles) //For production environments use `Environment.RELEASE`.
+    val config = TrullyConfig(Environment.DEBUG, "YOUR_ID_FOR_THE_PROCESS", styles)
+    //* For production environments use `Environment.RELEASE`.
+    //* If you want to change styles but don't won't to pass an externalID, pass null instead of string
 
     //Initialize SDK
     TrullySdk.init(packageContext, apiKey, config)
