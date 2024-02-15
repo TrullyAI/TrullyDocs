@@ -147,13 +147,13 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 | `externalID`     | Will allow you to link the process to an ID generate by you for better track of each process. Optional |
 | `styles`         | Styles object that will allow you to config color, logo and texts. Optional                            |
 
-To configure texts use the uiTexts object
+#### To configure texts use the uiTexts object
 
 | Value     | Description                                                                       |
 | --------- | --------------------------------------------------------------------------------- |
 | `docType` | What type of document the user need to complete de process. One of the Texts enum |
 
-Texts enums
+#### Texts enums
 
 | Parameter      | Value                   |
 | -------------- | ----------------------- |
