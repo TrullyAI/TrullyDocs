@@ -149,9 +149,9 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     styles.uiTexts.docType = Texts.INE
 
     //Set SDK configuration
-    val config = TrullyConfig(Environment.DEBUG, "YOUR_ID_FOR_THE_PROCESS", styles)
+    val config = TrullyConfig(environment =  Environment.DEBUG, externalID = "YOUR_ID_FOR_THE_PROCESS", style = styles, clarityKey = "YOUR_CLARITY_KEY")
     //* For production environments use `Environment.RELEASE`.
-    //* If you want to change styles but don't won't to pass an externalID, pass null instead of string
+    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments. Make sure to pass null for externalID if you're not using it.
 
     //Initialize SDK
     TrullySdk.init(packageContext, apiKey, config)
@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary_75
         styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary_75
 
-        val config = TrullyConfig(Environment.DEBUG, styles)
+        val config = TrullyConfig(environment = Environment.DEBUG, style = styles)
 
         TrullySdk.init(this, "YOUR_API_KEY", config)
     }
