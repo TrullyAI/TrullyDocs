@@ -87,37 +87,132 @@ dependencies {
 
 ### Listener
 
-At the end of the process the SDK will trigger an HTTP Request. Add
-TrullyResultListener to the activity that will launch the SDK and implement its
-members so you can have access to the response.
+Add TrullyResultListener to the activity that will launch the SDK and implement
+its members so you can have access to the process data.
 
-| Method     | Description                         |
-| ---------- | ----------------------------------- |
-| `onResult` | Catch the results of the operation. |
-| `onError`  | Catch the errors of the operation.  |
+| Method          | Description                                        |
+| --------------- | -------------------------------------------------- |
+| `onTrack`       | Catch the step changing of the operation.          |
+| `onTrackDetail` | Catch the user's interaction during the operation. |
+| `onResult`      | Catch the results of the operation.                |
+| `onError`       | Catch the errors of the operation.                 |
 
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener {
 
-    override fun onResult(response: TrullyResponse) {
-        TODO("On completed logic")
+    override fun onTrack(trackStep: TrackStep) {
+        Log.d("onTrack", trackStep.toString())
     }
 
-    override fun onError() {
-        TODO("Error logic")
+    override fun onTrackDetail(trackDetail: TrackDetail) {
+        Log.d("onTrackDetail", trackDetail.toString())
+    }
+
+    override fun onResult(response: TrullyResponse) {
+        Log.d("onresult", response.toString())
+    }
+
+    override fun onError(errorData: ErrorData) {
+        Log.d("onError", errorData.toString())
     }
 }
 ```
 
+### Listeners data structure
+
+Here you'll found the structures of the data received in each listener function
+
+#### onTrack
+
+This listener function will be called every time the user starts a new step on
+the process. There are five different steps. When a new step is started, you'll
+receive the data from the previous completed step.
+
+| Key            | Description                                  |
+| -------------- | -------------------------------------------- |
+| `step`         | Name of the previous completed step.         |
+| `userID`       | The userID you passed during initialization. |
+| `started_on`   | UTC timezone. Step starting time.            |
+| `completed_on` | UTC timezone. Step completion time.          |
+
+##### Steps Table
+
+| Name                  | Description                                       |
+| --------------------- | ------------------------------------------------- |
+| `form_start`          | User is currently scanning the document.          |
+| `form_document`       | Process is currently trying to obtained location. |
+| `form_location`       | User is currently completing liveness process.    |
+| `form_selfie`         | User reach the final step of the operation.       |
+| `form_decision_maker` | Operation has the Decision Maker respond.         |
+
+#### onTrackDetail
+
+This listener function will be called when the user take some actions during the
+operation. The actions that will trigger it are the ones related to the data
+needed for the Decision Maker.
+
+| Key         | Description                                   |
+| ----------- | --------------------------------------------- |
+| `userID`    | The userID you passed during initialization.  |
+| `action`    | Name of the action that trigger the function. |
+| `timestamp` | UTC timezone. When the function was trigger.  |
+
+##### Actions Table
+
+| Name                                     | Description                                                            |
+| ---------------------------------------- | ---------------------------------------------------------------------- |
+| `LEGAL_DOCUMENTATION_ACCEPTED`           | User accept Privacy Policy and Terms and Conditions.                   |
+| `LEGAL_DOCUMENTATION_DECLINED`           | User declined Privacy Policy and Terms and Conditions.                 |
+| `LOAD_NEXT_PAGE`                         | Operation start new page.                                              |
+| `NO_CAMERA_AVAILABLE`                    | The operation couldn't start camera.                                   |
+| `FRONT_IMAGE_OBTAINED`                   | Operation has document front.                                          |
+| `BACK_IMAGE_OBTAINED`                    | Operation has document back.                                           |
+| `DOCUMENT_ANALYSIS_RETRY`                | Operation needs to re start document analysis.                         |
+| `DOCUMENT_ANALYSIS_COMPLETE`             | Operation has analyzed front and back image.                           |
+| `LOCATION_OBTAINED`                      | Operation has user's location.                                         |
+| `LOCATION_SKIPPED`                       | Operation has continued without user's location.                       |
+| `LIVENESS_RECOGNITION_PROCESS_STARTED`   | Operation has start liveness analysis.                                 |
+| `LIVENESS_RECOGNITION_PROCESS_RETRY`     | Operation needs to re start liveness analysis.                         |
+| `LIVENESS_RECOGNITION_PROCESS_COMPLETED` | Operation has analyzed liveness status.                                |
+| `DATA_SEND_TO_DECISION_MAKER`            | Operation has sended data collected to Decision Maker. Awaiting result |
+| `END_KYC_PROCESS`                        | Operation has Decision Maker result.                                   |
+
+### onResult
+
+This listener function will be called when the operation gets the Decision Maker
+result. Go to "Reading Results" section to get more information
+
+### onError
+
+This listener function will be called in case of an error during the operation.
+
+| Key         | Description                                     |
+| ----------- | ----------------------------------------------- |
+| `process`   | Which part of the process trigger the function. |
+| `message`   | Error message                                   |
+| `userID`    | The userID you passed during initialization.    |
+| `timestamp` | UTC timezone. When the function was trigger.    |
+
+##### Process Table
+
+| Name                           | Description                                          |
+| ------------------------------ | ---------------------------------------------------- |
+| `SAVING_TRACK_STEP`            | HTTP error when saving track data.                   |
+| `OBTAINING_IP`                 | HTTP error when getting ip data.                     |
+| `INITIALIZING_DOCUMENT_READER` | Process error during document reader initialization. |
+| `READING_DOCUMENT`             | Process error analyzing document.                    |
+| `GETTING_LIVENESS`             | Process error analyzing liveness.                    |
+| `OBTAINING_DM_RESPONSE`        | HTTP error when getting Decision Maker response.     |
+
 ### Configure and initialize
 
-| Parameter        | Description                                                                                            |
-| ---------------- | ------------------------------------------------------------------------------------------------------ |
-| `packageContext` | Is the context of your Application/Activity.                                                           |
-| `apiKey`         | You're client API_KEY. The SDK won't work without it                                                   |
-| `config`         | Config object will pass the environment and the styles to the SDK                                      |
-| `externalID`     | Will allow you to link the process to an ID generate by you for better track of each process. Optional |
-| `styles`         | Styles object that will allow you to config color, logo and texts. Optional                            |
+| Parameter        | Description                                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------- |
+| `packageContext` | Is the context of your Application/Activity.                                                            |
+| `apiKey`         | You're client API_KEY. The SDK won't work without it.                                                   |
+| `userID`         | Will allow you to link the process to an ID generate by you for better track of each process. Mandatory |
+| `config`         | Config object will pass the environment and the styles to the SDK                                       |
+| `styles`         | Styles object that will allow you to config color, logo and texts. Optional                             |
 
 #### To configure texts use the uiTexts object
 
@@ -133,23 +228,47 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 | `INE`          | INE vigente             |
 | `PASSPORT`     | Pasaporte vigente       |
 
+#### Changing styles
+
+Optionally you can change colors and logo. These are the default values
+
+##### Colors
+
+| Key                        | Description                                           | Value     |
+| -------------------------- | ----------------------------------------------------- | --------- |
+| `primaryColor`             | Will change statusBar, button, icons and links color. | #475FFF   |
+| `disabledColor`            | Will change button color when legal is not accepted.  | #D6A0FF   |
+| `cameraScreenStrokeActive` | Liveness active pointer color.                        | #475FFF75 |
+| `cameraScreenStrokeNormal` | Liveness pointer color.                               | #475FFF50 |
+| `cameraScreenSectorActive` | Liveness active background pointer color.             | #475FFF75 |
+| `cameraScreenSectorTarget` | Liveness background pointer color.                    | #475FFF50 |
+
+##### Logo
+
+We are using the url to show you the images. Please, make sure you upload the
+images to your project and pass the corresponding drawable to the styles object
+
+| Key    | Value                                                                 |
+| ------ | --------------------------------------------------------------------- |
+| `logo` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/logo.png |
+
 ```java
   private fun initialize() {
-    //Optionally change color, logo and texts
     val styles: TrullyStyles = TrullyStyles()
 
     styles.primaryColor = ai.trully.sdk.R.color.primary
+    styles.disabledColor = ai.trully.sdk.R.color.disabledColor
     styles.logo = ai.trully.sdk.R.drawable.logo
 
-    styles.cameraStyle.cameraScreenSectorTarget = ai.trully.sdk.R.color.primary
-    styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary
-    styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary
-    styles.cameraStyle.cameraScreenStrokeNormal = ai.trully.sdk.R.color.primary
+    styles.cameraStyle.cameraScreenSectorTarget = ai.trully.sdk.R.color.primary75
+    styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary50
+    styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary75
+    styles.cameraStyle.cameraScreenStrokeNormal = ai.trully.sdk.R.color.primary50
 
     styles.uiTexts.docType = Texts.INE
 
     //Set SDK configuration
-    val config = TrullyConfig(environment =  Environment.DEBUG, externalID = "YOUR_ID_FOR_THE_PROCESS", style = styles, clarityKey = "YOUR_CLARITY_KEY")
+    val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, clarityKey = "YOUR_CLARITY_KEY")
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments. Make sure to pass null for externalID if you're not using it.
 
@@ -187,12 +306,19 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     }
 
     override fun onResult(response: TrullyResponse) {
-        TODO("On completed logic")
+        Log.d("onResult", response.toString())
     }
 
+    override fun onTrack(trackStep: TrackStep) {
+        Log.d("onTrack", trackStep.toString())
+    }
 
-    override fun onError() {
-        TODO("Error logic")
+    override fun onTrackDetail(trackDetail: TrackDetail) {
+        Log.d("onTrackDetail", trackDetail.toString())
+    }
+
+    override fun onError(errorData: ErrorData) {
+        Log.d("onError", errorData.toString())
     }
 
 
@@ -207,7 +333,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary_75
         styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary_75
 
-        val config = TrullyConfig(environment = Environment.DEBUG, style = styles)
+        val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, clarityKey = "YOUR_CLARITY_KEY")
 
         TrullySdk.init(this, "YOUR_API_KEY", config)
     }
@@ -225,11 +351,32 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 You'll find more details in
 [Decision Maker API Docs](https://trully.readme.io/reference/decisionmakerpredict)
 
-| Object          | Description                                             |
-| --------------- | ------------------------------------------------------- |
-| `decisionMaker` | Contains the complete Decision Maker response.          |
-| `images`        | Contains the document images and the selfie image.      |
-| `shortResponse` | Contains the basic data of the Decision Maker response. |
+| Object          | Description                                                             |
+| --------------- | ----------------------------------------------------------------------- |
+| `decisionMaker` | Contains the complete Decision Maker response.                          |
+| `images`        | Contains the Base64 string of the document images and the selfie image. |
+| `shortResponse` | Contains the basic data of the Decision Maker response.                 |
+
+#### shortResponse Object
+
+| key            | Description                                                                             |
+| -------------- | --------------------------------------------------------------------------------------- |
+| `userID`       | userID you passed during initialization. Link to request_id.                            |
+| `request_id`   | Decision Maker result id. Link to userID.                                               |
+| `label`        | Decision Maker result label.                                                            |
+|                | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk user |
+| `reason`       | Decision Maker result reasons.                                                          |
+| `request_date` | UTC timestamp.                                                                          |
+
+#### images Object
+
+| key                       | Description               |
+| ------------------------- | ------------------------- |
+| `selfieStr`               | Selfie.                   |
+| `documentStr`             | Cropped document front.   |
+| `documentBackStr`         | Cropped document back.    |
+| `documentCompleteStr`     | Uncropped document front. |
+| `documentBackCompleteStr` | Uncropped document back.  |
 
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener {
@@ -238,17 +385,18 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         Log.d("TRULLY_SDK", response.decisionMaker.toString())
 
         //Short response
+        Log.d("TRULLY_SDK", response.shortResponse?.userID.toString())
         Log.d("TRULLY_SDK", response.shortResponse?.request_id.toString())
         Log.d("TRULLY_SDK", response.shortResponse?.label.toString())
         Log.d("TRULLY_SDK", response.shortResponse?.reason.toString())
-        Log.d("TRULLY_SDK", response.shortResponse?.request_date.toString()) //UTC timestamp
+        Log.d("TRULLY_SDK", response.shortResponse?.request_date.toString())
 
         //Images - base64 string
-        Log.d("TRULLY_SDK", response.images?.selfieStr.toString()) //Selfie
-        Log.d("TRULLY_SDK", response.images?.documentStr.toString()) //Cropped document front
-        Log.d("TRULLY_SDK", response.images?.documentBackStr.toString()) //Cropped document back
-        Log.d("TRULLY_SDK", response.images?.documentCompleteStr.toString()) //Uncropped document front
-        Log.d("TRULLY_SDK", response.images?.documentBackCompleteStr.toString()) //Uncropped document back
+        Log.d("TRULLY_SDK", response.images?.selfieStr.toString())
+        Log.d("TRULLY_SDK", response.images?.documentStr.toString())
+        Log.d("TRULLY_SDK", response.images?.documentBackStr.toString())
+        Log.d("TRULLY_SDK", response.images?.documentCompleteStr.toString())
+        Log.d("TRULLY_SDK", response.images?.documentBackCompleteStr.toString())
     }
 }
 ```
@@ -487,12 +635,20 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
         Log.i("response", "finish")
     }
 
-    override fun onError() {
-        Log.i("response", "error")
+    override fun onTrack(trackStep: TrackStep) {
+        Log.d("onTrack", trackStep.toString())
+    }
+
+    override fun onTrackDetail(trackDetail: TrackDetail) {
+        Log.d("onTrackDetail", trackDetail.toString())
+    }
+
+    override fun onError(errorData: ErrorData) {
+        Log.d("onError", errorData.toString())
     }
 
     private fun initialize() {
-        val config = TrullyConfig(Environment.DEBUG)
+        val config = TrullyConfig(environment =  Environment.DEBUG,  clarityKey = "lqy0z96k5z", style = styles, userID = "un-id")
 
         TrullySdk.init(this, "YOUR_API_KEY", config)
         TrullySdk.start(this, this)
