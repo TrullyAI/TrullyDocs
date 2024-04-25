@@ -229,9 +229,9 @@ This listener function will be called in case of an error during the operation.
     }
 ```
 
-### Configure and initialize
+### Configure
 
-#### init function parameters
+To configure the SDK you'll need to call the `init` method.
 
 | Parameter        | Description                                                       |
 | ---------------- | ----------------------------------------------------------------- |
@@ -239,7 +239,15 @@ This listener function will be called in case of an error during the operation.
 | `apiKey`         | You're client API_KEY. The SDK won't work without it.             |
 | `config`         | Config object will pass the environment and the styles to the SDK |
 
+```java
+    TrullySdk.init(packageContext, apiKey, config)
+```
+
 #### config object
+
+The config object will allow to configure environment execution and change the
+styles. Also, for the process to work you need to pass a userID. The config
+object will let you do that.
 
 | Parameter     | Description                                                                                             |
 | ------------- | ------------------------------------------------------------------------------------------------------- |
@@ -247,23 +255,23 @@ This listener function will be called in case of an error during the operation.
 | `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Mandatory |
 | `styles`      | Styles object that will allow you to config color, logo and texts. Optional                             |
 
-#### To configure texts use the uiTexts object
+#### Changing styles
+
+Optionally you can change colors, texts and logo. These are the default values
+
+##### To configure texts use the uiTexts object
 
 | Value     | Description                                                                       |
 | --------- | --------------------------------------------------------------------------------- |
 | `docType` | What type of document the user need to complete de process. One of the Texts enum |
 
-#### Texts enums
+###### Texts enums
 
 | Parameter      | Value                   |
 | -------------- | ----------------------- |
 | `INE_PASSPORT` | INE o Pasaporte vigente |
 | `INE`          | INE vigente             |
 | `PASSPORT`     | Pasaporte vigente       |
-
-#### Changing styles
-
-Optionally you can change colors and logo. These are the default values
 
 ##### Colors
 
@@ -288,6 +296,8 @@ images to your project and pass the corresponding drawable to the styles object
 ```java
   private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
+
+    styles.uiTexts.docType = Texts.PASSPORT
 
     styles.primaryColor = ai.trully.sdk.R.color.primary
     styles.disabledColor = ai.trully.sdk.R.color.disabledColor
