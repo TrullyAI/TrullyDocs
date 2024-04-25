@@ -135,6 +135,14 @@ receive the data from the previous completed step.
 | `started_on`   | UTC timezone. Step starting time.            |
 | `completed_on` | UTC timezone. Step completion time.          |
 
+#### Example
+
+```java
+    override fun onTrack(trackStep: TrackStep) {
+        Log.d("onTrack", trackStep.toString())
+    }
+```
+
 ##### Steps Table
 
 | Name                  | Description                                       |
@@ -177,10 +185,19 @@ needed for the Decision Maker.
 | `DATA_SEND_TO_DECISION_MAKER`            | Operation has sended data collected to Decision Maker. Awaiting result |
 | `END_KYC_PROCESS`                        | Operation has Decision Maker result.                                   |
 
+#### Example
+
+```java
+    override fun onTrackDetail(trackDetail: TrackDetail) {
+        Log.d("onTrackDetail", trackDetail.toString())
+    }
+```
+
 ### onResult
 
 This listener function will be called when the operation gets the Decision Maker
-result. Go to "Reading Results" section to get more information
+result. Go to [<b>Reading Results</b>](#add-it-next) section to get more
+information
 
 ### onError
 
@@ -204,15 +221,31 @@ This listener function will be called in case of an error during the operation.
 | `GETTING_LIVENESS`             | Process error analyzing liveness.                    |
 | `OBTAINING_DM_RESPONSE`        | HTTP error when getting Decision Maker response.     |
 
+#### Example
+
+```java
+    override fun onError(errorData: ErrorData) {
+        Log.d("onError", errorData.toString())
+    }
+```
+
 ### Configure and initialize
 
-| Parameter        | Description                                                                                             |
-| ---------------- | ------------------------------------------------------------------------------------------------------- |
-| `packageContext` | Is the context of your Application/Activity.                                                            |
-| `apiKey`         | You're client API_KEY. The SDK won't work without it.                                                   |
-| `userID`         | Will allow you to link the process to an ID generate by you for better track of each process. Mandatory |
-| `config`         | Config object will pass the environment and the styles to the SDK                                       |
-| `styles`         | Styles object that will allow you to config color, logo and texts. Optional                             |
+#### init function parameters
+
+| Parameter        | Description                                                       |
+| ---------------- | ----------------------------------------------------------------- |
+| `packageContext` | Is the context of your Application/Activity.                      |
+| `apiKey`         | You're client API_KEY. The SDK won't work without it.             |
+| `config`         | Config object will pass the environment and the styles to the SDK |
+
+#### config object
+
+| Parameter     | Description                                                                                             |
+| ------------- | ------------------------------------------------------------------------------------------------------- |
+| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Mandatory                        |
+| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Mandatory |
+| `styles`      | Styles object that will allow you to config color, logo and texts. Optional                             |
 
 #### To configure texts use the uiTexts object
 
@@ -268,12 +301,15 @@ images to your project and pass the corresponding drawable to the styles object
     styles.uiTexts.docType = Texts.INE
 
     //Set SDK configuration
-    val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, clarityKey = "YOUR_CLARITY_KEY")
+    val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
     //* For production environments use `Environment.RELEASE`.
-    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments. Make sure to pass null for externalID if you're not using it.
+    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(packageContext, apiKey, config)
+    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+
+    //Run SDK
+    TrullySdk.start(packageContext = this, listener = this)
 }
 ```
 
@@ -335,16 +371,16 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
         val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, clarityKey = "YOUR_CLARITY_KEY")
 
-        TrullySdk.init(this, "YOUR_API_KEY", config)
+        TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
     }
 
     private fun onTap() {
-        TrullySdk.start(this, this)
+        TrullySdk.start(packageContext = this, listener = this)
     }
 }
 ```
 
-## Reading Results
+## <a id="results"></a>Reading Results
 
 ### Decision Maker Response
 
@@ -379,7 +415,6 @@ You'll find more details in
 | `documentBackCompleteStr` | Uncropped document back.  |
 
 ```java
-class MainActivity : AppCompatActivity(), TrullyResultListener {
     override fun onResult(response: TrullyResponse) {
         //Complete Decision Maker response
         Log.d("TRULLY_SDK", response.decisionMaker.toString())
@@ -398,7 +433,6 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         Log.d("TRULLY_SDK", response.images?.documentCompleteStr.toString())
         Log.d("TRULLY_SDK", response.images?.documentBackCompleteStr.toString())
     }
-}
 ```
 
 ## Shrinking App
