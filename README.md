@@ -1,4 +1,5 @@
 # TrullySDK
+ TrullyWebSDK is an identity validation component designed to be integrated into your decision-making process.
 
 ## Add TrullySDK repository and dependencies
 
