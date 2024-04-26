@@ -97,6 +97,8 @@ dependencies {
     //This are the dependencies that makes our SDK
     implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:0.0.14")
+    // Support for Java 8 features
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 }
 ```
 
@@ -111,6 +113,8 @@ dependencies {
     //This are the dependencies that makes our SDK
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.14'
+    // Support for Java 8 features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }
 ```
 
