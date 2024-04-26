@@ -1,5 +1,7 @@
 # TrullySDK
- TrullyWebSDK is an identity validation component designed to be integrated into your decision-making process.
+
+TrullyWebSDK is an identity validation component designed to be integrated into
+your decision-making process.
 
 ## Add TrullySDK repository and dependencies
 
@@ -39,7 +41,50 @@ dependencyResolutionManagement {
 }
 ```
 
-### 2.- Add dependencies to the App level `build.gradle`
+### 2.- Jetpack Compose on your App level `build.gradle`
+
+Enable Jetpack Compose by adding the following to the android section
+
+#### Kotlin DSL
+
+```groovy
+compileOptions {
+    // Support for Java 8 features
+    isCoreLibraryDesugaringEnabled = true
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+buildFeatures {
+    compose = true
+}
+
+composeOptions {
+    kotlinCompilerExtensionVersion = "1.5.1"
+}
+
+```
+
+#### Groovy DSL
+
+```groovy
+compileOptions {
+    // Support for Java 8 features
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+}
+
+buildFeatures {
+    compose true
+}
+
+composeOptions {
+   kotlinCompilerExtensionVersion '1.5.1'
+}
+```
+
+### 3.- Add dependencies to the App level `build.gradle`
 
 #### Kotlin DSL
 
@@ -50,7 +95,6 @@ dependencies {
     implementation("com.google.android.material:material:1.6.1")
 
     //This are the dependencies that makes our SDK
-    implementation("com.github.TrullyAI:FaceCore:5.2.232")
     implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:0.0.14")
 }
@@ -65,13 +109,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
 
     //This are the dependencies that makes our SDK
-    implementation 'com.github.TrullyAI:FaceCore:5.2.232'
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.14'
 }
 ```
 
-### 3.- Add permission in manifest
+### 4.- Add permission in manifest
 
 ```xml
     <uses-feature android:name="android.hardware.camera" android:required="true" />
@@ -250,11 +293,12 @@ The config object will allow to configure environment execution and change the
 styles. Also, for the process to work you need to pass a userID. The config
 object will let you do that.
 
-| Parameter     | Description                                                                                             |
-| ------------- | ------------------------------------------------------------------------------------------------------- |
-| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Mandatory                        |
-| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Mandatory |
-| `styles`      | Styles object that will allow you to config color, logo and texts. Optional                             |
+| Parameter     | Description                                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Mandatory                                    |
+| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Mandatory             |
+| `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Default false |
+| `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                         |
 
 #### Changing styles
 
@@ -276,14 +320,11 @@ Optionally you can change colors, texts and logo. These are the default values
 
 ##### Colors
 
-| Key                        | Description                                           | Value     |
-| -------------------------- | ----------------------------------------------------- | --------- |
-| `primaryColor`             | Will change statusBar, button, icons and links color. | #475FFF   |
-| `disabledColor`            | Will change button color when legal is not accepted.  | #D6A0FF   |
-| `cameraScreenStrokeActive` | Liveness active pointer color.                        | #475FFF75 |
-| `cameraScreenStrokeNormal` | Liveness pointer color.                               | #475FFF50 |
-| `cameraScreenSectorActive` | Liveness active background pointer color.             | #475FFF75 |
-| `cameraScreenSectorTarget` | Liveness background pointer color.                    | #475FFF50 |
+| Key               | Description                                           | Value   |
+| ----------------- | ----------------------------------------------------- | ------- |
+| `primaryColor`    | Will change statusBar, button, icons and links color. | #475FFF |
+| `disabledColor`   | Will change button color when legal is not accepted.  | #D6A0FF |
+| `backgroundColor` | Will change button color when legal is not accepted.  | #FFFFFF |
 
 ##### Logo
 
@@ -302,12 +343,8 @@ images to your project and pass the corresponding drawable to the styles object
 
     styles.primaryColor = ai.trully.sdk.R.color.primary
     styles.disabledColor = ai.trully.sdk.R.color.disabledColor
+    styles.backgroundColor = ai.trully.sdk.R.color.backgroundColor
     styles.logo = ai.trully.sdk.R.drawable.logo
-
-    styles.cameraStyle.cameraScreenSectorTarget = ai.trully.sdk.R.color.primary75
-    styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary50
-    styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary75
-    styles.cameraStyle.cameraScreenStrokeNormal = ai.trully.sdk.R.color.primary50
 
     styles.uiTexts.docType = Texts.INE
 
@@ -373,14 +410,11 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         val styles: TrullyStyles = TrullyStyles()
 
         styles.primaryColor = ai.trully.sdk.R.color.primary
+        styles.disabledColor = ai.trully.sdk.R.color.disabledColor
+        styles.backgroundColor = ai.trully.sdk.R.color.backgroundColor
         styles.logo = ai.trully.sdk.R.drawable.logo
 
-        styles.cameraStyle.cameraScreenSectorTarget = ai.trully.sdk.R.color.primary_50
-        styles.cameraStyle.cameraScreenStrokeNormal = ai.trully.sdk.R.color.primary_50
-        styles.cameraStyle.cameraScreenSectorActive = ai.trully.sdk.R.color.primary_75
-        styles.cameraStyle.cameraScreenStrokeActive = ai.trully.sdk.R.color.primary_75
-
-        val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, clarityKey = "YOUR_CLARITY_KEY")
+        val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
 
         TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
     }
@@ -449,8 +483,7 @@ You'll find more details in
 ## Shrinking App
 
 To reduce the App download size you can implement Dynamic Feature Modules to
-generate an on-demand installation of **DocumentReaderFullAuth** and
-**FaceCore**
+generate an on-demand installation of **DocumentReaderFullAuth**
 
 ⚠️ The .aab size will not be reduced but Google Play will manage the files so
 the download size will be reduced
@@ -576,7 +609,6 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation("com.github.TrullyAI:FaceCore:5.2.232")
     implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
 }
 ```
@@ -585,7 +617,6 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.TrullyAI:FaceCore:5.2.232'
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
 }
 ```
@@ -693,7 +724,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
     }
 
     private fun initialize() {
-        val config = TrullyConfig(environment =  Environment.DEBUG,  clarityKey = "lqy0z96k5z", style = styles, userID = "un-id")
+        val config = TrullyConfig(environment =  Environment.DEBUG, userID = "un-id", style = styles)
 
         TrullySdk.init(this, "YOUR_API_KEY", config)
         TrullySdk.start(this, this)
