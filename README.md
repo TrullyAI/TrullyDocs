@@ -41,7 +41,7 @@ dependencyResolutionManagement {
 }
 ```
 
-### 2.- Jetpack Compose on your App level `build.gradle`
+### 2.- Add Jetpack Compose on your App level `build.gradle`
 
 Enable Jetpack Compose by adding the following to the android section
 
@@ -228,7 +228,6 @@ needed for the Decision Maker.
 | `LOCATION_OBTAINED`                      | Operation has user's location.                                         |
 | `LOCATION_SKIPPED`                       | Operation has continued without user's location.                       |
 | `LIVENESS_RECOGNITION_PROCESS_STARTED`   | Operation has start liveness analysis.                                 |
-| `LIVENESS_RECOGNITION_PROCESS_RETRY`     | Operation needs to re start liveness analysis.                         |
 | `LIVENESS_RECOGNITION_PROCESS_COMPLETED` | Operation has analyzed liveness status.                                |
 | `DATA_SEND_TO_DECISION_MAKER`            | Operation has sended data collected to Decision Maker. Awaiting result |
 | `END_KYC_PROCESS`                        | Operation has Decision Maker result.                                   |
