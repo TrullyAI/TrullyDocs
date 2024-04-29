@@ -243,8 +243,7 @@ needed for the Decision Maker.
 ### onResult
 
 This listener function will be called when the operation gets the Decision Maker
-result. Go to [<b>Reading Results</b>](#add-it-next) section to get more
-information
+result. Go to [<b>Reading Results</b>](#results) section to get more information
 
 ### onError
 
