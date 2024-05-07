@@ -366,7 +366,7 @@ Optionally you can change colors, texts and images. These are the default values
 | `disabledColor`   | Will change button color when legal is not accepted.  | #D6A0FF |
 | `backgroundColor` | Will change button color when legal is not accepted.  | #FFFFFF |
 
-````java
+```java
   private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
 
@@ -385,6 +385,7 @@ Optionally you can change colors, texts and images. These are the default values
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
 }
+```
 
 ##### Images
 
@@ -434,7 +435,7 @@ images to your project and pass the corresponding drawable to the styles object
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
 }
-````
+```
 
 ### Launch
 
