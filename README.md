@@ -226,6 +226,7 @@ needed for the Decision Maker.
 | `DOCUMENT_ANALYSIS_RETRY`                | Operation needs to re start document analysis.                         |
 | `DOCUMENT_ANALYSIS_COMPLETE`             | Operation has analyzed front and back image.                           |
 | `LOCATION_OBTAINED`                      | Operation has user's location.                                         |
+| `LOCATION_RETRY`                         | Operation blocked due to location permissions denied. Retry operation  |
 | `LOCATION_SKIPPED`                       | Operation has continued without user's location.                       |
 | `LIVENESS_RECOGNITION_PROCESS_STARTED`   | Operation has start liveness analysis.                                 |
 | `LIVENESS_RECOGNITION_PROCESS_COMPLETED` | Operation has analyzed liveness status.                                |
@@ -264,6 +265,7 @@ This listener function will be called in case of an error during the operation.
 | `OBTAINING_IP`                 | HTTP error when getting ip data.                     |
 | `INITIALIZING_DOCUMENT_READER` | Process error during document reader initialization. |
 | `READING_DOCUMENT`             | Process error analyzing document.                    |
+| `GETTING_LOCATION`             | Process error obtaining location.                    |
 | `GETTING_LIVENESS`             | Process error analyzing liveness.                    |
 | `OBTAINING_DM_RESPONSE`        | HTTP error when getting Decision Maker response.     |
 
@@ -302,9 +304,26 @@ object will let you do that.
 | `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Default false |
 | `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                         |
 
+```java
+  private fun initialize() {
+    val styles: TrullyStyles = TrullyStyles()
+
+    //Set SDK configuration
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+    //* For production environments use `Environment.RELEASE`.
+    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
+
+    //Initialize SDK
+    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+
+    //Run SDK
+    TrullySdk.start(packageContext = this, listener = this)
+}
+```
+
 #### Changing styles
 
-Optionally you can change colors, texts and logo. These are the default values
+Optionally you can change colors, texts and images. These are the default values
 
 ##### To configure texts use the uiTexts object
 
@@ -320,38 +339,14 @@ Optionally you can change colors, texts and logo. These are the default values
 | `INE`          | INE vigente             |
 | `PASSPORT`     | Pasaporte vigente       |
 
-##### Colors
-
-| Key               | Description                                           | Value   |
-| ----------------- | ----------------------------------------------------- | ------- |
-| `primaryColor`    | Will change statusBar, button, icons and links color. | #475FFF |
-| `disabledColor`   | Will change button color when legal is not accepted.  | #D6A0FF |
-| `backgroundColor` | Will change button color when legal is not accepted.  | #FFFFFF |
-
-##### Logo
-
-We are using the url to show you the images. Please, make sure you upload the
-images to your project and pass the corresponding drawable to the styles object
-
-| Key    | Value                                                                 |
-| ------ | --------------------------------------------------------------------- |
-| `logo` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/logo.png |
-
 ```java
   private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
 
     styles.uiTexts.docType = Texts.PASSPORT
 
-    styles.primaryColor = ai.trully.sdk.R.color.primary
-    styles.disabledColor = ai.trully.sdk.R.color.disabledColor
-    styles.backgroundColor = ai.trully.sdk.R.color.backgroundColor
-    styles.logo = ai.trully.sdk.R.drawable.logo
-
-    styles.uiTexts.docType = Texts.INE
-
     //Set SDK configuration
-    val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -362,6 +357,84 @@ images to your project and pass the corresponding drawable to the styles object
     TrullySdk.start(packageContext = this, listener = this)
 }
 ```
+
+##### Colors
+
+| Key               | Description                                           | Value   |
+| ----------------- | ----------------------------------------------------- | ------- |
+| `primaryColor`    | Will change statusBar, button, icons and links color. | #475FFF |
+| `disabledColor`   | Will change button color when legal is not accepted.  | #D6A0FF |
+| `backgroundColor` | Will change button color when legal is not accepted.  | #FFFFFF |
+
+````java
+  private fun initialize() {
+    val styles: TrullyStyles = TrullyStyles()
+
+    styles.primaryColor = ai.trully.sdk.R.color.primary
+    styles.disabledColor = ai.trully.sdk.R.color.disabledColor
+    styles.backgroundColor = ai.trully.sdk.R.color.backgroundColor
+
+    //Set SDK configuration
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+    //* For production environments use `Environment.RELEASE`.
+    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
+
+    //Initialize SDK
+    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+
+    //Run SDK
+    TrullySdk.start(packageContext = this, listener = this)
+}
+
+##### Images
+
+We are using the url to show you the images. Please, make sure you upload the
+images to your project and pass the corresponding drawable to the styles object
+
+| Key                   | Value                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------- |
+| `logo`                | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/logo.png                 |
+| `IDIcon`              | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID-1.svg                 |
+| `selfieIcon`          | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/Video-1.svg              |
+| `IDImage`             | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID2-1.svg                |
+| `light`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/luzIcon.svg              |
+| `cross`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/retirarElementosIcon.svg |
+| `showId`              | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pruebavida.svg           |
+| `check`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/icon-check.svg           |
+| `faceTimeout`         | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/rostrofail.svg           |
+| `noLocation`          | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pin-1.svg                |
+| `noCamera`            | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/cameraDenied-1.svg       |
+| `error`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/timeout.svg              |
+
+```java
+  private fun initialize() {
+    val styles: TrullyStyles = TrullyStyles()
+
+    styles.logo = ai.trully.sdk.R.drawable.logo
+    styles.IDIcon = ai.trully.sdk.R.drawable.ine
+    styles.selfieIcon = ai.trully.sdk.R.drawable.selfie
+    styles.IdImage = ai.trully.sdk.R.drawable.id
+    styles.light = ai.trully.truedeepfakedetection.R.drawable.light
+    styles.cross = ai.trully.truedeepfakedetection.R.drawable.cross
+    styles.showId = ai.trully.sdk.R.drawable.pruebavida
+    styles.check = ai.trully.sdk.R.drawable.check_circulo
+    styles.faceTimeout = ai.trully.truedeepfakedetection.R.drawable.rostrofail
+    styles.noLocation = ai.trully.sdk.R.drawable.ubicacion
+    styles.noCamera = ai.trully.sdk.R.drawable.camara
+    styles.errorIcon = ai.trully.sdk.R.drawable.timeouticon
+
+    //Set SDK configuration
+    val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+    //* For production environments use `Environment.RELEASE`.
+    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
+
+    //Initialize SDK
+    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+
+    //Run SDK
+    TrullySdk.start(packageContext = this, listener = this)
+}
+````
 
 ### Launch
 
@@ -411,12 +484,26 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     private fun initialize() {
         val styles: TrullyStyles = TrullyStyles()
 
+	    styles.uiTexts.docType = Texts.PASSPORT
+
         styles.primaryColor = ai.trully.sdk.R.color.primary
         styles.disabledColor = ai.trully.sdk.R.color.disabledColor
         styles.backgroundColor = ai.trully.sdk.R.color.backgroundColor
-        styles.logo = ai.trully.sdk.R.drawable.logo
 
-        val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
+        styles.logo = ai.trully.sdk.R.drawable.logo
+        styles.IDIcon = ai.trully.sdk.R.drawable.ine
+    	styles.selfieIcon = ai.trully.sdk.R.drawable.selfie
+    	styles.IdImage = ai.trully.sdk.R.drawable.id
+    	styles.light = ai.trully.truedeepfakedetection.R.drawable.light
+    	styles.cross = ai.trully.truedeepfakedetection.R.drawable.cross
+    	styles.showId = ai.trully.sdk.R.drawable.pruebavida
+    	styles.check = ai.trully.sdk.R.drawable.check_circulo
+    	styles.faceTimeout = ai.trully.truedeepfakedetection.R.drawable.rostrofail
+    	styles.noLocation = ai.trully.sdk.R.drawable.ubicacion
+    	styles.noCamera = ai.trully.sdk.R.drawable.camara
+    	styles.errorIcon = ai.trully.sdk.R.drawable.timeouticon
+
+        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
 
         TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
     }
@@ -726,7 +813,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
     }
 
     private fun initialize() {
-        val config = TrullyConfig(environment =  Environment.DEBUG, userID = "un-id", style = styles)
+        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
 
         TrullySdk.init(this, "YOUR_API_KEY", config)
         TrullySdk.start(this, this)
