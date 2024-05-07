@@ -599,7 +599,7 @@ android {
     defaultConfig {
         ...
         ndk {
-            abiFilters("armeabi-v7a")
+            abiFilters("arm64-v8a")
         }
     }
 }
