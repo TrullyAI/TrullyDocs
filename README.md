@@ -133,7 +133,7 @@ dependencies {
 
 ## Add it to you're project
 
-### Listener
+### Add Listeners
 
 Add TrullyResultListener to the activity that will launch the SDK and implement
 its members so you can have access to the process data.
@@ -144,6 +144,8 @@ its members so you can have access to the process data.
 | `onTrackDetail` | Catch the user's interaction during the operation. |
 | `onResult`      | Catch the results of the operation.                |
 | `onError`       | Catch the errors of the operation.                 |
+
+#### Example
 
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener {
@@ -162,6 +164,87 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
     override fun onError(errorData: ErrorData) {
         Log.d("onError", errorData.toString())
+    }
+}
+```
+
+### Configure SDK
+
+To configure the SDK you'll need to call the `init` method.
+
+| Parameter        | Description                                                       |
+| ---------------- | ----------------------------------------------------------------- |
+| `packageContext` | Is the context of your Application/Activity.                      |
+| `apiKey`         | You're client API_KEY. The SDK won't work without it.             |
+| `config`         | Config object will pass the environment and the styles to the SDK |
+
+#### Example
+
+```java
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
+    //* For production environments use `Environment.RELEASE`. Required
+    //* userID will identify the user completing the process. Required
+
+    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+```
+
+### Launch SDK
+
+To start the SDK you'll need to call the `start` method.
+
+| Parameter        | Description                                               |
+| ---------------- | --------------------------------------------------------- |
+| `packageContext` | Is the context of your Application/Activity.              |
+| `listener`       | Is the TrullyResultListener of your Application/activity. |
+
+#### Example
+
+```java
+    TrullySdk.start(packageContext = this, listener = this)
+```
+
+#### Complete Example with default styles
+
+```java
+class MainActivity : AppCompatActivity(), TrullyResultListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        findViewById<Button>(R.id.launchTrully)
+            .setOnClickListener {
+                initialize()
+            }
+    }
+
+    override fun onResult(response: TrullyResponse) {
+        Log.d("onResult", response.toString())
+    }
+
+    override fun onTrack(trackStep: TrackStep) {
+        Log.d("onTrack", trackStep.toString())
+    }
+
+    override fun onTrackDetail(trackDetail: TrackDetail) {
+        Log.d("onTrackDetail", trackDetail.toString())
+    }
+
+    override fun onError(errorData: ErrorData) {
+        Log.d("onError", errorData.toString())
+    }
+
+
+    private fun initialize() {
+        //Set SDK configuration
+        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
+        //* For production environments use `Environment.RELEASE`. Required
+        //* userID will identify the user completing the process. Required
+
+        //Initialize SDK
+        TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+
+        //Run SDK
+        TrullySdk.start(packageContext = this, listener = this)
     }
 }
 ```
@@ -213,6 +296,14 @@ needed for the Decision Maker.
 | `action`    | Name of the action that trigger the function. |
 | `timestamp` | UTC timezone. When the function was trigger.  |
 
+#### Example
+
+```java
+    override fun onTrackDetail(trackDetail: TrackDetail) {
+        Log.d("onTrackDetail", trackDetail.toString())
+    }
+```
+
 ##### Actions Table
 
 | Name                                     | Description                                                            |
@@ -233,14 +324,6 @@ needed for the Decision Maker.
 | `DATA_SEND_TO_DECISION_MAKER`            | Operation has sended data collected to Decision Maker. Awaiting result |
 | `END_KYC_PROCESS`                        | Operation has Decision Maker result.                                   |
 
-#### Example
-
-```java
-    override fun onTrackDetail(trackDetail: TrackDetail) {
-        Log.d("onTrackDetail", trackDetail.toString())
-    }
-```
-
 ### onResult
 
 This listener function will be called when the operation gets the Decision Maker
@@ -257,6 +340,14 @@ This listener function will be called in case of an error during the operation.
 | `userID`    | The userID you passed during initialization.    |
 | `timestamp` | UTC timezone. When the function was trigger.    |
 
+#### Example
+
+```java
+    override fun onError(errorData: ErrorData) {
+        Log.d("onError", errorData.toString())
+    }
+```
+
 ##### Process Table
 
 | Name                           | Description                                          |
@@ -269,29 +360,7 @@ This listener function will be called in case of an error during the operation.
 | `GETTING_LIVENESS`             | Process error analyzing liveness.                    |
 | `OBTAINING_DM_RESPONSE`        | HTTP error when getting Decision Maker response.     |
 
-#### Example
-
-```java
-    override fun onError(errorData: ErrorData) {
-        Log.d("onError", errorData.toString())
-    }
-```
-
-### Configure
-
-To configure the SDK you'll need to call the `init` method.
-
-| Parameter        | Description                                                       |
-| ---------------- | ----------------------------------------------------------------- |
-| `packageContext` | Is the context of your Application/Activity.                      |
-| `apiKey`         | You're client API_KEY. The SDK won't work without it.             |
-| `config`         | Config object will pass the environment and the styles to the SDK |
-
-```java
-    TrullySdk.init(packageContext, apiKey, config)
-```
-
-#### config object
+#### Personalization
 
 The config object will allow to configure environment execution and change the
 styles. Also, for the process to work you need to pass a userID. The config
@@ -299,10 +368,12 @@ object will let you do that.
 
 | Parameter     | Description                                                                                                         |
 | ------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Mandatory                                    |
-| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Mandatory             |
+| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Required                                     |
+| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Required              |
 | `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Default false |
 | `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                         |
+
+#### Example
 
 ```java
   private fun initialize() {
@@ -339,6 +410,8 @@ Optionally you can change colors, texts and images. These are the default values
 | `INE`          | INE vigente             |
 | `PASSPORT`     | Pasaporte vigente       |
 
+#### Example
+
 ```java
   private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
@@ -366,6 +439,8 @@ Optionally you can change colors, texts and images. These are the default values
 | `disabledColor`   | Will change button color when legal is not accepted.  | #D6A0FF |
 | `backgroundColor` | Will change button color when legal is not accepted.  | #FFFFFF |
 
+#### Example
+
 ```java
   private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
@@ -392,21 +467,23 @@ Optionally you can change colors, texts and images. These are the default values
 We are using the url to show you the images. Please, make sure you upload the
 images to your project and pass the corresponding drawable to the styles object
 
-| Key                   | Value                                                                                 |
-| --------------------- | ------------------------------------------------------------------------------------- |
-| `logo`                | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/logo.png                 |
-| `IDIcon`              | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID-1.svg                 |
-| `selfieIcon`          | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/Video-1.svg              |
-| `IDImage`             | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID2-1.svg                |
-| `permissions`         | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/modalcamera-andriod.svg  |
-| `light`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/luzIcon.svg              |
-| `cross`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/retirarElementosIcon.svg |
-| `showId`              | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pruebavida.svg           |
-| `check`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/icon-check.svg           |
-| `faceTimeout`         | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/rostrofail.svg           |
-| `noLocation`          | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pin-1.svg                |
-| `noCamera`            | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/cameraDenied-1.svg       |
-| `error`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/timeout.svg              |
+| Key           | Value                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------- |
+| `logo`        | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/logo.png                 |
+| `IDIcon`      | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID-1.svg                 |
+| `selfieIcon`  | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/Video-1.svg              |
+| `IDImage`     | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID2-1.svg                |
+| `permissions` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/modalcamera-andriod.svg  |
+| `light`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/luzIcon.svg              |
+| `cross`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/retirarElementosIcon.svg |
+| `showId`      | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pruebavida.svg           |
+| `check`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/icon-check.svg           |
+| `faceTimeout` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/rostrofail.svg           |
+| `noLocation`  | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pin-1.svg                |
+| `noCamera`    | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/cameraDenied-1.svg       |
+| `error`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/timeout.svg              |
+
+#### Example
 
 ```java
   private fun initialize() {
@@ -439,19 +516,6 @@ images to your project and pass the corresponding drawable to the styles object
 }
 ```
 
-### Launch
-
-To start the SDK you'll need to call the `start` method.
-
-| Parameter        | Description                                               |
-| ---------------- | --------------------------------------------------------- |
-| `packageContext` | Is the context of your Application/Activity.              |
-| `listener`       | Is the TrullyResultListener of your Application/activity. |
-
-```java
-    TrullySdk.start(packageContext, listener)
-```
-
 ### Full Example
 
 ```java
@@ -463,7 +527,6 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         findViewById<Button>(R.id.launchTrully)
             .setOnClickListener {
                 initialize()
-                onTap()
             }
     }
 
@@ -509,10 +572,10 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 
         val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
 
+        //Initialize SDK
         TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
-    }
 
-    private fun onTap() {
+        //Run SDK
         TrullySdk.start(packageContext = this, listener = this)
     }
 }
