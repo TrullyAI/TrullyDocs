@@ -398,6 +398,7 @@ images to your project and pass the corresponding drawable to the styles object
 | `IDIcon`              | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID-1.svg                 |
 | `selfieIcon`          | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/Video-1.svg              |
 | `IDImage`             | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID2-1.svg                |
+| `permissions`         | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/modalcamera-andriod.svg  |
 | `light`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/luzIcon.svg              |
 | `cross`               | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/retirarElementosIcon.svg |
 | `showId`              | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pruebavida.svg           |
@@ -415,6 +416,7 @@ images to your project and pass the corresponding drawable to the styles object
     styles.IDIcon = ai.trully.sdk.R.drawable.ine
     styles.selfieIcon = ai.trully.sdk.R.drawable.selfie
     styles.IdImage = ai.trully.sdk.R.drawable.id
+    styles.permission = ai.trully.sdk.R.drawable.modalandroid_camara
     styles.light = ai.trully.truedeepfakedetection.R.drawable.light
     styles.cross = ai.trully.truedeepfakedetection.R.drawable.cross
     styles.showId = ai.trully.sdk.R.drawable.pruebavida
@@ -495,6 +497,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         styles.IDIcon = ai.trully.sdk.R.drawable.ine
     	styles.selfieIcon = ai.trully.sdk.R.drawable.selfie
     	styles.IdImage = ai.trully.sdk.R.drawable.id
+    	styles.permission = ai.trully.sdk.R.drawable.modalandroid_camara
     	styles.light = ai.trully.truedeepfakedetection.R.drawable.light
     	styles.cross = ai.trully.truedeepfakedetection.R.drawable.cross
     	styles.showId = ai.trully.sdk.R.drawable.pruebavida
