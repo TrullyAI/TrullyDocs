@@ -234,7 +234,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         //* userID will identify the user completing the process. Required
 
         //Initialize SDK
-        TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+        TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
 
         //Run SDK
         TrullySdk.start(packageContext = this, listener = this)
@@ -378,7 +378,7 @@ object will let you do that.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -417,7 +417,7 @@ Optionally you can change colors, texts and images. These are the default values
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -448,7 +448,7 @@ Optionally you can change colors, texts and images. These are the default values
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -502,7 +502,7 @@ images to your project and pass the corresponding drawable to the styles object
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -566,7 +566,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
 
         //Initialize SDK
-        TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+        TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
 
         //Run SDK
         TrullySdk.start(packageContext = this, listener = this)
