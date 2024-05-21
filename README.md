@@ -90,13 +90,8 @@ composeOptions {
 
 ```groovy
 dependencies {
-    //if you're using JetPack make sure to add this two dependencies otherwise you'll get resource missing error
-    implementation("androidx.appcompat:appcompat:1.4.2")
-    implementation("com.google.android.material:material:1.6.1")
-
-    //This are the dependencies that makes our SDK
     implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
-    implementation("com.github.TrullyAI:TrullyKotlinSDK:0.0.14")
+    implementation("com.github.TrullyAI:TrullyKotlinSDK:version")
     // Support for Java 8 features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }
@@ -106,15 +101,10 @@ dependencies {
 
 ```groovy
 dependencies {
-    //if you're using JetPack make sure to add this two dependencies otherwise you'll get resource missing error
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.6.1'
-
-    //This are the dependencies that makes our SDK
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
-    implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.14'
+    implementation 'com.github.TrullyAI:TrullyKotlinSDK:version'
     // Support for Java 8 features
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.15'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
 ```
 
@@ -126,7 +116,6 @@ dependencies {
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
 ```
@@ -550,7 +539,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     private fun initialize() {
         val styles: TrullyStyles = TrullyStyles()
 
-	    styles.uiTexts.docType = Texts.PASSPORT
+	styles.uiTexts.docType = Texts.PASSPORT
 
         styles.primaryColor = ai.trully.sdk.R.color.primary
         styles.disabledColor = ai.trully.sdk.R.color.disabledColor
@@ -788,7 +777,7 @@ dependencies {
     implementation("com.google.android.play:core-ktx:1.8.1")
 
     //SDK dependencies without DocumentReaderFullAuth and FaceCore
-    implementation("com.github.TrullyAI:TrullyKotlinSDK:0.0.14")
+    implementation("com.github.TrullyAI:TrullyKotlinSDK:version")
 }
 ```
 
@@ -800,7 +789,7 @@ dependencies {
     implementation 'com.google.android.play:core-ktx:1.8.1'
 
     //SDK dependencies without DocumentReaderFullAuth and FaceCore
-    implementation 'com.github.TrullyAI:TrullyKotlinSDK:0.0.14'
+    implementation 'com.github.TrullyAI:TrullyKotlinSDK:version'
 }
 ```
 
@@ -925,7 +914,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
     }
 
     private fun initialize() {
-        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
 
         TrullySdk.init(this, "YOUR_API_KEY", config)
         TrullySdk.start(this, this)
