@@ -41,7 +41,36 @@ dependencyResolutionManagement {
 }
 ```
 
-### 2.- Add Jetpack Compose on your App level `build.gradle`
+### 2.- Check compileSdk and minSdk
+
+Our module requires a compileSdk of, at least, 34 and a minSdk of, at least, 24.
+Make sure your `build.gradle` has the correct versioning
+
+#### Kotlin DSL
+
+```groovy
+android {
+    compileSdk = 34
+
+    defaultConfig {
+        minSdk = 24
+    }
+}
+```
+
+#### Groovy DSL
+
+```groovy
+android {
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 24
+    }
+}
+```
+
+### 3.- Add Jetpack Compose on your App level `build.gradle`
 
 Enable Jetpack Compose by adding the following to the android section
 
@@ -88,37 +117,39 @@ android {
 }
 ```
 
-### 3.a- Add dependencies to the App level `build.gradle`
+### 4- Add dependencies
 
-#### Kotlin DSL
+#### Without libraries system. Add the dependencies directly to the App level `build.gradle`
+
+##### Kotlin DSL
 
 ```groovy
 dependencies {
     implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
-    implementation("com.github.TrullyAI:TrullyKotlinSDK:version")
+    implementation("com.github.TrullyAI:TrullyKotlinSDK:latest") //change latest for the version number
     // Support for Java 8 features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }
 ```
 
-#### Groovy DSL
+##### Groovy DSL
 
 ```groovy
 dependencies {
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
-    implementation 'com.github.TrullyAI:TrullyKotlinSDK:version'
+    implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
     // Support for Java 8 features
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5
 }
 ```
 
-### 3.b- Add dependencies using the libraries system
+### With libraries system.
 
-#### `libs.versions.toml` file
+#### 1.- Add the dependencies info to the `libs.versions.toml` file
 
 ```groovy
 [versions]
-trully = "version"
+trully = "latest" //change latest for the version number
 docReader = "6.9.9555"
 desugaring = "1.1.5"
 
@@ -128,7 +159,7 @@ desugaring-library = { group = "com.android.tools", name = "desugar_jdk_libs", v
 trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.ref = "trully" }
 ```
 
-#### App level `build.gradle`
+#### 2.- Add the library dependencies to your App level `build.gradle`
 
 ```groovy
 dependencies {
@@ -138,7 +169,7 @@ dependencies {
 }
 ```
 
-### 4.- Add permission in manifest
+### 5.- Add permission in manifest
 
 ```xml
     <uses-feature android:name="android.hardware.camera" android:required="true" />
