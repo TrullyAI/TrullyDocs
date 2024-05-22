@@ -120,11 +120,11 @@ dependencies {
 [versions]
 trully = "version"
 docReader = "6.9.9555"
-desugarding = "1.1.5"
+desugaring = "1.1.5"
 
 [libraries]
 trully-doc = { group = "com.github.TrullyAI", name = "DocumentReaderFullAuth", version.ref = "docReader" }
-desugaring-library = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarding" }
+desugaring-library = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugaring" }
 trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.ref = "trully" }
 ```
 
