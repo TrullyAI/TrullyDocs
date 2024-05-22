@@ -239,10 +239,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.launchTrully)
-            .setOnClickListener {
-                initialize()
-            }
+        initialize()
     }
 
     override fun onResult(response: TrullyResponse) {
@@ -562,10 +559,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        findViewById<Button>(R.id.launchTrully)
-            .setOnClickListener {
-                initialize()
-            }
+        initialize()
     }
 
     override fun onResult(response: TrullyResponse) {
