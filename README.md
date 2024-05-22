@@ -88,7 +88,7 @@ android {
 }
 ```
 
-### 3.- Add dependencies to the App level `build.gradle`
+### 3.a- Add dependencies to the App level `build.gradle`
 
 #### Kotlin DSL
 
@@ -109,6 +109,32 @@ dependencies {
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:version'
     // Support for Java 8 features
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5
+}
+```
+
+### 3.b- Add dependencies using the libraries system
+
+#### `libs.versions.toml` file
+
+```groovy
+[versions]
+trully = "version"
+docReader = "6.9.9555"
+desugarding = "1.1.5"
+
+[libraries]
+trully-doc = { group = "com.github.TrullyAI", name = "DocumentReaderFullAuth", version.ref = "docReader" }
+desugaring-library = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugarding" }
+trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.ref = "trully" }
+```
+
+#### App level `build.gradle`
+
+```groovy
+dependencies {
+    implementation(libs.trully.sdk)
+    implementation(libs.trully.doc)
+    coreLibraryDesugaring(libs.desugaring.library)
 }
 ```
 
@@ -199,6 +225,15 @@ To start the SDK you'll need to call the `start` method.
 #### Complete Example with default styles
 
 ```java
+import ai.trully.sdk.TrullySdk
+import ai.trully.sdk.configurations.TrullyConfig
+import ai.trully.sdk.models.Environment
+import ai.trully.sdk.models.ErrorData
+import ai.trully.sdk.models.TrackDetail
+import ai.trully.sdk.models.TrackStep
+import ai.trully.sdk.models.TrullyResponse
+import ai.trully.sdk.protocols.listeners.TrullyResultListener
+
 class MainActivity : AppCompatActivity(), TrullyResultListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -406,7 +441,7 @@ Optionally you can change colors, texts and images. These are the default values
 #### Example
 
 ```java
-  private fun initialize() {
+private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
 
     styles.uiTexts.docType = Texts.PASSPORT
@@ -435,7 +470,7 @@ Optionally you can change colors, texts and images. These are the default values
 #### Example
 
 ```java
-  private fun initialize() {
+private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
 
     styles.primaryColor = ai.trully.sdk.R.color.primary
@@ -479,7 +514,7 @@ images to your project and pass the corresponding drawable to the styles object
 #### Example
 
 ```java
-  private fun initialize() {
+private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
 
     styles.logo = ai.trully.sdk.R.drawable.logo
@@ -512,6 +547,15 @@ images to your project and pass the corresponding drawable to the styles object
 ### Full Example
 
 ```java
+import ai.trully.sdk.TrullySdk
+import ai.trully.sdk.configurations.TrullyConfig
+import ai.trully.sdk.models.Environment
+import ai.trully.sdk.models.ErrorData
+import ai.trully.sdk.models.TrackDetail
+import ai.trully.sdk.models.TrackStep
+import ai.trully.sdk.models.TrullyResponse
+import ai.trully.sdk.protocols.listeners.TrullyResultListener
+
 class MainActivity : AppCompatActivity(), TrullyResultListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
