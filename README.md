@@ -474,8 +474,8 @@ private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
 
     styles.primaryColor = ai.trully.sdk.R.color.primary
-    styles.disabledColor = ai.trully.sdk.R.color.disabledColor
-    styles.backgroundColor = ai.trully.sdk.R.color.backgroundColor
+    styles.disabledColor = ai.trully.sdk.R.color.disabled
+    styles.backgroundColor = ai.trully.sdk.R.color.background
 
     //Set SDK configuration
     val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
@@ -549,6 +549,7 @@ private fun initialize() {
 ```java
 import ai.trully.sdk.TrullySdk
 import ai.trully.sdk.configurations.TrullyConfig
+import ai.trully.sdk.configurations.TrullyStyles
 import ai.trully.sdk.models.Environment
 import ai.trully.sdk.models.ErrorData
 import ai.trully.sdk.models.TrackDetail
@@ -590,8 +591,8 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 	styles.uiTexts.docType = Texts.PASSPORT
 
         styles.primaryColor = ai.trully.sdk.R.color.primary
-        styles.disabledColor = ai.trully.sdk.R.color.disabledColor
-        styles.backgroundColor = ai.trully.sdk.R.color.backgroundColor
+        styles.disabledColor = ai.trully.sdk.R.color.disabled
+        styles.backgroundColor = ai.trully.sdk.R.color.background
 
         styles.logo = ai.trully.sdk.R.drawable.logo
         styles.IDIcon = ai.trully.sdk.R.drawable.ine
