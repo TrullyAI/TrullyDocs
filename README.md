@@ -70,7 +70,7 @@ android {
 }
 ```
 
-### 3.- Add Jetpack Compose on your App level `build.gradle`
+### 3.- Add Jetpack Compose and ViewBinding on your App level `build.gradle`
 
 Enable Jetpack Compose by adding the following to the android section
 
@@ -92,6 +92,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
+    
+    viewBinding {
+        enable = true
+    }
 }
 
 ```
@@ -112,7 +116,11 @@ android {
     }
 
     composeOptions {
-    kotlinCompilerExtensionVersion '1.5.1'
+    	kotlinCompilerExtensionVersion '1.5.1'
+    }
+    
+    viewBinding {
+        enabled true
     }
 }
 ```
@@ -426,6 +434,8 @@ object will let you do that.
 | ------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Required                                     |
 | `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Required              |
+| `tag`         | Valid uuid string. If you do not provide it, one will automatically generated.                                      |
+|               | This tag is used to link every image analysis run by this SDK			                                      |
 | `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Default false |
 | `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                         |
 
@@ -436,7 +446,7 @@ object will let you do that.
     val styles: TrullyStyles = TrullyStyles()
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -475,7 +485,7 @@ private fun initialize() {
     styles.uiTexts.docType = Texts.PASSPORT
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -506,7 +516,7 @@ private fun initialize() {
     styles.backgroundColor = ai.trully.sdk.R.color.background
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -560,7 +570,7 @@ private fun initialize() {
     styles.errorIcon = ai.trully.sdk.R.drawable.timeouticon
 
     //Set SDK configuration
-    val config = TrullyConfig(environment =  Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -633,7 +643,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     	styles.noCamera = ai.trully.sdk.R.drawable.camara
     	styles.errorIcon = ai.trully.sdk.R.drawable.timeouticon
 
-        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles, showIdView = true)
+        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
 
         //Initialize SDK
         TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
@@ -990,8 +1000,11 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
     private fun initialize() {
         val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
 
-        TrullySdk.init(this, "YOUR_API_KEY", config)
-        TrullySdk.start(this, this)
+        //Initialize SDK
+        TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+
+        //Run SDK
+        TrullySdk.start(packageContext = this, listener = this)
     }
 }
 ```
