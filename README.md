@@ -92,7 +92,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
-    
+
     viewBinding {
         enable = true
     }
@@ -118,7 +118,7 @@ android {
     composeOptions {
     	kotlinCompilerExtensionVersion '1.5.1'
     }
-    
+
     viewBinding {
         enabled true
     }
@@ -243,7 +243,7 @@ To configure the SDK you'll need to call the `init` method.
     //* For production environments use `Environment.RELEASE`. Required
     //* userID will identify the user completing the process. Required
 
-    TrullySdk.init(packageContext = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 ```
 
 ### Launch SDK
@@ -305,7 +305,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         //* userID will identify the user completing the process. Required
 
         //Initialize SDK
-        TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+        TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 
         //Run SDK
         TrullySdk.start(packageContext = this, listener = this)
@@ -435,7 +435,7 @@ object will let you do that.
 | `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Required                                     |
 | `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Required              |
 | `tag`         | Valid uuid string. If you do not provide it, one will automatically generated.                                      |
-|               | This tag is used to link every image analysis run by this SDK			                                      |
+|               | This tag is used to link every image analysis run by this SDK                                                       |
 | `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Default false |
 | `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                         |
 
@@ -451,7 +451,7 @@ object will let you do that.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -490,7 +490,7 @@ private fun initialize() {
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -521,7 +521,7 @@ private fun initialize() {
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -575,7 +575,7 @@ private fun initialize() {
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
     //Initialize SDK
-    TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 
     //Run SDK
     TrullySdk.start(packageContext = this, listener = this)
@@ -646,7 +646,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
         val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
 
         //Initialize SDK
-        TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+        TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 
         //Run SDK
         TrullySdk.start(packageContext = this, listener = this)
@@ -1001,7 +1001,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStat
         val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
 
         //Initialize SDK
-        TrullySdk.init(context = this, apiKey = "YOUR_API_KEY", config = config)
+        TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
 
         //Run SDK
         TrullySdk.start(packageContext = this, listener = this)
