@@ -659,7 +659,7 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
 ### Decision Maker Response
 
 You'll find more details in
-[Decision Maker API Docs](https://trully.readme.io/reference/decisionmakerpredict)
+[Decision Maker API Docs](https://docs.trully.ai/reference/post_v1-decision-maker-predict)
 
 | Object          | Description                                                             |
 | --------------- | ----------------------------------------------------------------------- |
