@@ -3,6 +3,82 @@
 TrullyWebSDK is an identity validation component designed to be integrated into
 your decision-making process.
 
+# Table of Contents
+
+1. [Add TrullySDK repository and dependencies](#add-trullysdk-repository-and-dependencies)
+   1. [Add jitpack as repository store in `settings.gradle`](#1--add-jitpack-as-repository-store-in-settingsgradle)
+      1. [Kotlin DSL](#kotlin-dsl)
+      2. [Groovy DSL](#groovy-dsl)
+   2. [Check compileSdk and minSdk](#2--check-compilesdk-and-minsdk)
+      1. [Kotlin DSL](#kotlin-dsl-1)
+      2. [Groovy DSL](#groovy-dsl-1)
+   3. [Add Jetpack Compose and ViewBinding on your App level `build.gradle`](#3--add-jetpack-compose-and-viewbinding-on-your-app-level-buildgradle)
+      1. [Kotlin DSL](#kotlin-dsl-2)
+      2. [Groovy DSL](#groovy-dsl-2)
+   4. [Add dependencies](#4--add-dependencies)
+      1. [Without libraries system. Add the dependencies directly to the App level `build.gradle`](#without-libraries-system-add-the-dependencies-directly-to-the-app-level-buildgradle)
+         1. [Kotlin DSL](#kotlin-dsl-3)
+         2. [Groovy DSL](#groovy-dsl-3)
+      2. [With libraries system](#with-libraries-system)
+         1. [Add the dependencies info to the `libs.versions.toml` file](#1--add-the-dependencies-info-to-the-libsversionstoml-file)
+         2. [Add the library dependencies to your App level `build.gradle`](#2--add-the-library-dependencies-to-your-app-level-buildgradle)
+   5. [Add permission in manifest](#5--add-permission-in-manifest)
+2. [Add it to your project](#add-it-to-your-project)
+   1. [Add Listeners](#add-listeners)
+      1. [Example](#example)
+   2. [Configure SDK](#configure-sdk)
+      1. [Example](#example-1)
+   3. [Launch SDK](#launch-sdk)
+      1. [Example](#example-2)
+   4. [Complete Example with default styles](#complete-example-with-default-styles)
+   5. [Listeners data structure](#listeners-data-structure)
+      1. [onTrack](#ontrack)
+         1. [Example](#example-3)
+         2. [Steps Table](#steps-table)
+      2. [onTrackDetail](#ontrackdetail)
+         1. [Example](#example-4)
+         2. [Actions Table](#actions-table)
+      3. [onResult](#onresult)
+      4. [onError](#onerror)
+         1. [Example](#example-5)
+         2. [Process Table](#process-table)
+3. [Personalization](#personalization)
+   1. [Example](#example-6)
+   2. [Changing styles](#changing-styles)
+      1. [To configure texts use the uiTexts object](#to-configure-texts-use-the-uitexts-object)
+         1. [Example](#example-7)
+      2. [Colors](#colors)
+         1. [Example](#example-8)
+      3. [Images](#images)
+         1. [Example](#example-9)
+4. [Full Example](#full-example-1)
+5. [Reading Results](#reading-results)
+   1. [Decision Maker Response](#decision-maker-response)
+      1. [shortResponse Object](#shortresponse-object)
+      2. [images Object](#images-object)
+         1. [Example](#example-10)
+6. [How to know the app size](#how-to-know-the-app-size)
+   1. [Configure the desired architecture build on your app level `build.gradle`](#1--configure-the-desired-architecture-build-on-your-app-level-buildgradle)
+      1. [Kotlin DSL](#kotlin-dsl-4)
+      2. [Groovy DSL](#groovy-dsl-4)
+   2. [Generate a signed App Bundle](#2--generate-a-signed-app-bundle)
+7. [Shrinking App](#shrinking-app)
+   1. [Create a new Dynamic Feature Module](#1--create-a-new-dynamic-feature-module)
+      1. [`settings.gradle`](#settingsgradle)
+      2. [App level `build.gradle`](#app-level-buildgradle)
+   2. [Add android.play to the App level `build.gradle`](#2--add-androidplay-to-the-app-level-buildgradle)
+      1. [Kotlin DSL](#kotlin-dsl-5)
+      2. [Groovy DSL](#groovy-dsl-5)
+   3. [Add split android.play SplitCompatApplication to the App manifest](#3--add-split-androidplay-splitcompatapplication-to-the-app-manifest)
+   4. [Move DocumentReaderFullAuth dependencies to your new module `build.gradle`](#4--move-documentreaderfullauth-dependencies-to-your-new-module-buildgradle)
+      1. [App level `build.gradle` dependencies](#app-level-buildgradle-dependencies)
+         1. [Kotlin DSL](#kotlin-dsl-6)
+         2. [Groovy DSL](#groovy-dsl-6)
+      2. [Module level `build.gradle` dependencies](#module-level-buildgradle-dependencies)
+         1. [Kotlin DSL](#kotlin-dsl-7)
+         2. [Groovy DSL](#groovy-dsl-7)
+   5. [Configure an Activity to init the download](#5--configure-an-activity-to-init-the-download)
+
 ## Add TrullySDK repository and dependencies
 
 ### 1.- Add jitpack as repository store in `settings.gradle`
@@ -850,7 +926,7 @@ dependencies {
     </application>
 ```
 
-### 4.- Move DocumentReaderFullAuth and FaceCore dependencies to your new module `build.gradle`
+### 4.- Move DocumentReaderFullAuth dependencies to your new module `build.gradle`
 
 #### App level `build.gradle` dependencies
 
@@ -897,8 +973,6 @@ dependencies {
 ```
 
 ### 5.- Configure an Activity to init the download
-
-#### Full Example
 
 ```java
 class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStateUpdatedListener {
