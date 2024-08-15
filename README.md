@@ -209,7 +209,7 @@ android {
 
 ```groovy
 dependencies {
-    implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
+    implementation("com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:latest") //change latest for the version number
     // Support for Java 8 features
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
@@ -220,7 +220,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
+    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
     // Support for Java 8 features
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5
@@ -234,7 +234,7 @@ dependencies {
 ```groovy
 [versions]
 trully = "latest" //change latest for the version number
-docReader = "6.9.9555"
+docReader = "7.9.9555"
 desugaring = "1.1.5"
 
 [libraries]
@@ -960,7 +960,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation("com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555")
+    implementation("com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555")
 }
 ```
 
@@ -968,7 +968,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:6.9.9555'
+    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555'
 }
 ```
 
