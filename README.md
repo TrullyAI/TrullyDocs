@@ -28,6 +28,7 @@ your decision-making process.
       1. [Example](#example)
    2. [Configure SDK](#configure-sdk)
       1. [Example](#example-1)
+      2. [Configure back event](#configure-back-event)
    3. [Launch SDK](#launch-sdk)
       1. [Example](#example-2)
    4. [Complete Example with default styles](#complete-example-with-default-styles)
@@ -227,9 +228,9 @@ dependencies {
 }
 ```
 
-### With libraries system.
+#### With libraries system.
 
-#### 1.- Add the dependencies info to the `libs.versions.toml` file
+##### 1.- Add the dependencies info to the `libs.versions.toml` file
 
 ```groovy
 [versions]
@@ -243,7 +244,7 @@ desugaring-library = { group = "com.android.tools", name = "desugar_jdk_libs", v
 trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.ref = "trully" }
 ```
 
-#### 2.- Add the library dependencies to your App level `build.gradle`
+##### 2.- Add the library dependencies to your App level `build.gradle`
 
 ```groovy
 dependencies {
@@ -317,6 +318,23 @@ To configure the SDK you'll need to call the `init` method.
 
 ```java
     val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
+    //* For production environments use `Environment.RELEASE`. Required
+    //* userID will identify the user completing the process. Required
+
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
+```
+
+#### Configure back event
+
+Optionally you can pass a Lambda function to the TrulyConfig object so you can
+decide what should happen on back event
+
+##### Example
+
+```java
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS") {
+        Toast.makeText(this, "On Back Pressed", Toast.LENGTH_SHORT).show()
+    }
     //* For production environments use `Environment.RELEASE`. Required
     //* userID will identify the user completing the process. Required
 
