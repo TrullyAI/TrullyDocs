@@ -271,7 +271,7 @@ dependencies {
 
 ### Add Listeners
 
-Add TrullyResultListener to the activity that will launch the SDK and implement
+Add TrullyListeners to the activity that will launch the SDK and implement
 its members so you can have access to the process data.
 
 | Method          | Description                                        |
@@ -284,7 +284,7 @@ its members so you can have access to the process data.
 #### Example
 
 ```java
-class MainActivity : AppCompatActivity(), TrullyResultListener {
+class MainActivity : AppCompatActivity(), TrullyListeners {
 
     override fun onTrack(trackStep: TrackStep) {
         Log.d("onTrack", trackStep.toString())
@@ -301,6 +301,12 @@ class MainActivity : AppCompatActivity(), TrullyResultListener {
     override fun onError(errorData: ErrorData) {
         Log.d("onError", errorData.toString())
     }
+
+    /* Optional */
+    override fun onLeaveFromStart() {
+        Log.d("onLeaveFromStart", "Custom back action when the user back to the previous screen from the TrullySDK")
+    }
+
 }
 ```
 
@@ -353,7 +359,7 @@ To start the SDK you'll need to call the `start` method.
 | Parameter        | Description                                               |
 | ---------------- | --------------------------------------------------------- |
 | `packageContext` | Is the context of your Application/Activity.              |
-| `listener`       | Is the TrullyResultListener of your Application/activity. |
+| `listener`       | Is the TrullyListeners of your Application/activity. |
 
 #### Example
 
@@ -371,9 +377,9 @@ import ai.trully.sdk.models.ErrorData
 import ai.trully.sdk.models.TrackDetail
 import ai.trully.sdk.models.TrackStep
 import ai.trully.sdk.models.TrullyResponse
-import ai.trully.sdk.protocols.listeners.TrullyResultListener
+import ai.trully.sdk.protocols.listeners.TrullyListeners
 
-class MainActivity : AppCompatActivity(), TrullyResultListener {
+class MainActivity : AppCompatActivity(), TrullyListeners {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -693,9 +699,9 @@ import ai.trully.sdk.models.ErrorData
 import ai.trully.sdk.models.TrackDetail
 import ai.trully.sdk.models.TrackStep
 import ai.trully.sdk.models.TrullyResponse
-import ai.trully.sdk.protocols.listeners.TrullyResultListener
+import ai.trully.sdk.protocols.listeners.TrullyListeners
 
-class MainActivity : AppCompatActivity(), TrullyResultListener {
+class MainActivity : AppCompatActivity(), TrullyListeners {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -998,7 +1004,7 @@ dependencies {
 ### 5.- Configure an Activity to init the download
 
 ```java
-class MainActivity : AppCompatActivity(), TrullyResultListener, SplitInstallStateUpdatedListener {
+class MainActivity : AppCompatActivity(), TrullyListeners, SplitInstallStateUpdatedListener {
     //variable to store the SplitInstallManager instance
     private lateinit var installManager: SplitInstallManager
 
