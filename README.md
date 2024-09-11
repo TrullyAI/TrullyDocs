@@ -6,78 +6,40 @@ your decision-making process.
 # Table of Contents
 
 1. [Add TrullySDK repository and dependencies](#add-trullysdk-repository-and-dependencies)
-   1. [Add jitpack as repository store in `settings.gradle`](#1--add-jitpack-as-repository-store-in-settingsgradle)
-      1. [Kotlin DSL](#kotlin-dsl)
-      2. [Groovy DSL](#groovy-dsl)
+   1. [Add jitpack as repository store in settings.gradle](#1--add-jitpack-as-repository-store-in-settingsgradle)
    2. [Check compileSdk and minSdk](#2--check-compilesdk-and-minsdk)
-      1. [Kotlin DSL](#kotlin-dsl-1)
-      2. [Groovy DSL](#groovy-dsl-1)
-   3. [Add Jetpack Compose and ViewBinding on your App level `build.gradle`](#3--add-jetpack-compose-and-viewbinding-on-your-app-level-buildgradle)
-      1. [Kotlin DSL](#kotlin-dsl-2)
-      2. [Groovy DSL](#groovy-dsl-2)
+   3. [Add Jetpack Compose and ViewBinding](#3--add-jetpack-compose-and-viewbinding-on-your-app-level-buildgradle)
    4. [Add dependencies](#4--add-dependencies)
-      1. [Without libraries system. Add the dependencies directly to the App level `build.gradle`](#without-libraries-system-add-the-dependencies-directly-to-the-app-level-buildgradle)
-         1. [Kotlin DSL](#kotlin-dsl-3)
-         2. [Groovy DSL](#groovy-dsl-3)
+      1. [Without libraries system](#without-libraries-system-add-the-dependencies-directly-to-the-app-level-buildgradle)
       2. [With libraries system](#with-libraries-system)
-         1. [Add the dependencies info to the `libs.versions.toml` file](#1--add-the-dependencies-info-to-the-libsversionstoml-file)
-         2. [Add the library dependencies to your App level `build.gradle`](#2--add-the-library-dependencies-to-your-app-level-buildgradle)
    5. [Add permission in manifest](#5--add-permission-in-manifest)
-2. [Add it to your project](#add-it-to-your-project)
+2. [Add it to your project](#add-it-to-youre-project)
    1. [Add Listeners](#add-listeners)
-      1. [Example](#example)
-   2. [Configure SDK](#configure-sdk)
-      1. [Example](#example-1)
-      2. [Configure back event](#configure-back-event)
-   3. [Launch SDK](#launch-sdk)
-      1. [Example](#example-2)
-   4. [Complete Example with default styles](#complete-example-with-default-styles)
-   5. [Listeners data structure](#listeners-data-structure)
+      1. [Configure back event](#configure-back-event)
+      2. [Configure SDK](#configure-sdk)
+      3. [Launch SDK](#launch-sdk)
+   2. [Complete Example with default styles](#complete-example-with-default-styles)
+   3. [Listeners data structure](#listeners-data-structure)
       1. [onTrack](#ontrack)
-         1. [Example](#example-3)
-         2. [Steps Table](#steps-table)
       2. [onTrackDetail](#ontrackdetail)
-         1. [Example](#example-4)
-         2. [Actions Table](#actions-table)
       3. [onResult](#onresult)
       4. [onError](#onerror)
-         1. [Example](#example-5)
-         2. [Process Table](#process-table)
 3. [Personalization](#personalization)
-   1. [Example](#example-6)
+   1. [Example](#example)
    2. [Changing styles](#changing-styles)
-      1. [To configure texts use the uiTexts object](#to-configure-texts-use-the-uitexts-object)
-         1. [Example](#example-7)
+      1. [To configure texts](#to-configure-texts-use-the-uitexts-object)
+         1. [Texts enums](#texts-enums)
       2. [Colors](#colors)
-         1. [Example](#example-8)
       3. [Images](#images)
-         1. [Example](#example-9)
-4. [Full Example](#full-example-1)
+4. [Full Example](#full-example)
 5. [Reading Results](#reading-results)
    1. [Decision Maker Response](#decision-maker-response)
-      1. [shortResponse Object](#shortresponse-object)
-      2. [images Object](#images-object)
-         1. [Example](#example-10)
 6. [How to know the app size](#how-to-know-the-app-size)
-   1. [Configure the desired architecture build on your app level `build.gradle`](#1--configure-the-desired-architecture-build-on-your-app-level-buildgradle)
-      1. [Kotlin DSL](#kotlin-dsl-4)
-      2. [Groovy DSL](#groovy-dsl-4)
-   2. [Generate a signed App Bundle](#2--generate-a-signed-app-bundle)
 7. [Shrinking App](#shrinking-app)
    1. [Create a new Dynamic Feature Module](#1--create-a-new-dynamic-feature-module)
-      1. [`settings.gradle`](#settingsgradle)
-      2. [App level `build.gradle`](#app-level-buildgradle)
-   2. [Add android.play to the App level `build.gradle`](#2--add-androidplay-to-the-app-level-buildgradle)
-      1. [Kotlin DSL](#kotlin-dsl-5)
-      2. [Groovy DSL](#groovy-dsl-5)
+   2. [Add android.play to the App level build.gradle](#2--add-androidplay-to-the-app-level-buildgradle)
    3. [Add split android.play SplitCompatApplication to the App manifest](#3--add-split-androidplay-splitcompatapplication-to-the-app-manifest)
-   4. [Move DocumentReaderFullAuth dependencies to your new module `build.gradle`](#4--move-documentreaderfullauth-dependencies-to-your-new-module-buildgradle)
-      1. [App level `build.gradle` dependencies](#app-level-buildgradle-dependencies)
-         1. [Kotlin DSL](#kotlin-dsl-6)
-         2. [Groovy DSL](#groovy-dsl-6)
-      2. [Module level `build.gradle` dependencies](#module-level-buildgradle-dependencies)
-         1. [Kotlin DSL](#kotlin-dsl-7)
-         2. [Groovy DSL](#groovy-dsl-7)
+   4. [Move DocumentReaderFullAuth dependencies to your new module](#4--move-documentreaderfullauth-dependencies-to-your-new-module-buildgradle)
    5. [Configure an Activity to init the download](#5--configure-an-activity-to-init-the-download)
 
 ## Add TrullySDK repository and dependencies
@@ -274,12 +236,13 @@ dependencies {
 Add TrullyListeners to the activity that will launch the SDK and implement its
 members so you can have access to the process data.
 
-| Method          | Description                                        |
-| --------------- | -------------------------------------------------- |
-| `onTrack`       | Catch the step changing of the operation.          |
-| `onTrackDetail` | Catch the user's interaction during the operation. |
-| `onResult`      | Catch the results of the operation.                |
-| `onError`       | Catch the errors of the operation.                 |
+| Method             | Description                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------- |
+| `onTrack`          | Catch the step changing of the operation.                                                |
+| `onTrackDetail`    | Catch the user's interaction during the operation.                                       |
+| `onResult`         | Catch the results of the operation.                                                      |
+| `onError`          | Catch the errors of the operation.                                                       |
+| `onLeaveFromStart` | Optional. Set an action for the onBackPressed event for the initial view of the process. |
 
 #### Example
 
@@ -310,8 +273,8 @@ To start the process you need to pass the packageContext. This is because our
 SDK runs on top of that context, which means if you run it from an empty
 Activity and the user goes back while on the first view of the SDK it will be
 left with an empty view. Same goes for fragments. <br/> You can control this by
-passing an optional Lambda function to the TrullyConfig object so you can decide
-where the user should be redirected
+adding the optional onLeaveFromStart listener so you can decide where the user
+should be redirected
 
 ##### Example
 
@@ -329,11 +292,11 @@ where the user should be redirected
 
 To configure the SDK you'll need to call the `init` method.
 
-| Parameter        | Description                                                       |
-| ---------------- | ----------------------------------------------------------------- |
-| `packageContext` | Is the context of your Application/Activity.                      |
-| `apiKey`         | You're client API_KEY. The SDK won't work without it.             |
-| `config`         | Config object will pass the environment and the styles to the SDK |
+| Parameter        | Description                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------ |
+| `packageContext` | Is the context of your Application/Activity.                                                           |
+| `apiKey`         | You're client API_KEY. The SDK won't work without it.                                                  |
+| `config`         | Config object will pass the environment and the styles to the SDK. [<b>See more</b>](#personalization) |
 
 #### Example
 
@@ -360,7 +323,7 @@ To start the SDK you'll need to call the `start` method.
     TrullySdk.start(packageContext = this, listener = this)
 ```
 
-#### Complete Example with default styles
+### Complete Example with default styles
 
 ```java
 import ai.trully.sdk.TrullySdk
@@ -429,7 +392,7 @@ receive the data from the previous completed step.
 | `started_on`   | UTC timezone. Step starting time.            |
 | `completed_on` | UTC timezone. Step completion time.          |
 
-#### Example
+##### Example
 
 ```java
     override fun onTrack(trackStep: TrackStep) {
@@ -459,7 +422,7 @@ needed for the Decision Maker.
 | `action`    | Name of the action that trigger the function. |
 | `timestamp` | UTC timezone. When the function was trigger.  |
 
-#### Example
+##### Example
 
 ```java
     override fun onTrackDetail(trackDetail: TrackDetail) {
@@ -487,12 +450,12 @@ needed for the Decision Maker.
 | `DATA_SEND_TO_DECISION_MAKER`            | Operation has sended data collected to Decision Maker. Awaiting result |
 | `END_KYC_PROCESS`                        | Operation has Decision Maker result.                                   |
 
-### onResult
+#### onResult
 
 This listener function will be called when the operation gets the Decision Maker
 result. Go to [<b>Reading Results</b>](#results) section to get more information
 
-### onError
+#### onError
 
 This listener function will be called in case of an error during the operation.
 
@@ -503,7 +466,7 @@ This listener function will be called in case of an error during the operation.
 | `userID`    | The userID you passed during initialization.    |
 | `timestamp` | UTC timezone. When the function was trigger.    |
 
-#### Example
+##### Example
 
 ```java
     override fun onError(errorData: ErrorData) {
@@ -523,20 +486,21 @@ This listener function will be called in case of an error during the operation.
 | `GETTING_LIVENESS`             | Process error analyzing liveness.                    |
 | `OBTAINING_DM_RESPONSE`        | HTTP error when getting Decision Maker response.     |
 
-#### Personalization
+### Personalization
 
 The config object will allow to configure environment execution and change the
 styles. Also, for the process to work you need to pass a userID. The config
 object will let you do that.
 
-| Parameter     | Description                                                                                                         |
-| ------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Required                                     |
-| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Required              |
-| `tag`         | Valid uuid string. If you do not provide it, one will automatically generated.                                      |
-|               | This tag is used to link every image analysis run by this SDK                                                       |
-| `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Default false |
-| `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                         |
+| Parameter     | Description                                                                                                                   |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Required                                               |
+| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Required                        |
+| `tag`         | Valid uuid string. If you do not provide it, one will automatically generated.                                                |
+|               | This tag is used to link every image analysis run by this SDK                                                                 |
+| `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Optional. Default false |
+| `webhook`     | String. Set it to receive the SDK response on a webhook. Optional                                                             |
+| `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                                   |
 
 #### Example
 
@@ -545,7 +509,7 @@ object will let you do that.
     val styles: TrullyStyles = TrullyStyles()
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true, webhook = "YOUR_WEBHOOK_URL")
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -575,7 +539,7 @@ Optionally you can change colors, texts and images. These are the default values
 | `INE`          | INE vigente             |
 | `PASSPORT`     | Pasaporte vigente       |
 
-#### Example
+###### Example
 
 ```java
 private fun initialize() {
@@ -604,7 +568,7 @@ private fun initialize() {
 | `disabledColor`   | Will change button color when legal is not accepted.  | #D6A0FF |
 | `backgroundColor` | Will change button color when legal is not accepted.  | #FFFFFF |
 
-#### Example
+###### Example
 
 ```java
 private fun initialize() {
@@ -648,7 +612,7 @@ images to your project and pass the corresponding drawable to the styles object
 | `noCamera`    | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/cameraDenied-1.svg       |
 | `error`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/timeout.svg              |
 
-#### Example
+###### Example
 
 ```java
 private fun initialize() {
@@ -759,52 +723,42 @@ class MainActivity : AppCompatActivity(), TrullyListeners {
 
 You'll find more details in
 [Decision Maker API Docs](https://docs.trully.ai/reference/post_v1-decision-maker-predict)
+If you have set a webhook, this is the data you'll be receiving
 
-| Object          | Description                                                             |
-| --------------- | ----------------------------------------------------------------------- |
-| `decisionMaker` | Contains the complete Decision Maker response.                          |
-| `images`        | Contains the Base64 string of the document images and the selfie image. |
-| `shortResponse` | Contains the basic data of the Decision Maker response.                 |
+| Key                            | Description                                                                                                                                                      |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tag`                          | String. The tag from the process. Automatically generated when you didn't pass one through configuration prop                                                    |
+| `user_id`                      | String. The userID you passed with the TrullyConfig object                                                                                                       |
+| `raw_data`                     | Object containing the unprocessed data from the Decision Maker. You can learn more about [here](https://docs.trully.ai/reference/post_v1-decision-maker-predict) |
+| `label`                        | String. The label generate by the Decision Maker for the user who has completed the process                                                                      |
+|                                | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk                                                                               |
+| `reason`                       | Array. Contains the reasons behind the decision                                                                                                                  |
+| `request_id`                   | String. ID created by the Decision Maker                                                                                                                         |
+| `image`                        | Base64 string. Selfie                                                                                                                                            |
+| `document_image`               | Base64 string. Document front cropped                                                                                                                            |
+| `document_image_complete`      | Base64 string. Document front uncropped                                                                                                                          |
+| `document_image_back`          | Base64 string. Document back cropped                                                                                                                             |
+| `document_image_back_complete` | Base64 string. Document back uncropped                                                                                                                           |
 
-#### shortResponse Object
-
-| key            | Description                                                                             |
-| -------------- | --------------------------------------------------------------------------------------- |
-| `userID`       | userID you passed during initialization. Link to request_id.                            |
-| `request_id`   | Decision Maker result id. Link to userID.                                               |
-| `label`        | Decision Maker result label.                                                            |
-|                | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk user |
-| `reason`       | Decision Maker result reasons.                                                          |
-| `request_date` | UTC timestamp.                                                                          |
-
-#### images Object
-
-| key                       | Description               |
-| ------------------------- | ------------------------- |
-| `selfieStr`               | Selfie.                   |
-| `documentStr`             | Cropped document front.   |
-| `documentBackStr`         | Cropped document back.    |
-| `documentCompleteStr`     | Uncropped document front. |
-| `documentBackCompleteStr` | Uncropped document back.  |
+#### Example
 
 ```java
     override fun onResult(response: TrullyResponse) {
         //Complete Decision Maker response
-        Log.d("TRULLY_SDK", response.decisionMaker.toString())
+        Log.d("TRULLY_SDK", response.raw_data.toString())
 
         //Short response
-        Log.d("TRULLY_SDK", response.shortResponse?.userID.toString())
-        Log.d("TRULLY_SDK", response.shortResponse?.request_id.toString())
-        Log.d("TRULLY_SDK", response.shortResponse?.label.toString())
-        Log.d("TRULLY_SDK", response.shortResponse?.reason.toString())
-        Log.d("TRULLY_SDK", response.shortResponse?.request_date.toString())
+        Log.d("TRULLY_SDK", response.user_id.toString())
+        Log.d("TRULLY_SDK", response.request_id.toString())
+        Log.d("TRULLY_SDK", response.label.toString())
+        Log.d("TRULLY_SDK", response.reason.toString())
 
         //Images - base64 string
-        Log.d("TRULLY_SDK", response.images?.selfieStr.toString())
-        Log.d("TRULLY_SDK", response.images?.documentStr.toString())
-        Log.d("TRULLY_SDK", response.images?.documentBackStr.toString())
-        Log.d("TRULLY_SDK", response.images?.documentCompleteStr.toString())
-        Log.d("TRULLY_SDK", response.images?.documentBackCompleteStr.toString())
+        Log.d("TRULLY_SDK", response.image.toString())
+        Log.d("TRULLY_SDK", response.images.document_image.toString())
+        Log.d("TRULLY_SDK", response.images.document_image_complete.toString())
+        Log.d("TRULLY_SDK", response.document_image_back.toString())
+        Log.d("TRULLY_SDK", response.document_image_back_complete.toString())
     }
 ```
 
