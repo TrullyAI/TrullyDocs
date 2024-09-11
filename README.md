@@ -723,7 +723,7 @@ class MainActivity : AppCompatActivity(), TrullyListeners {
 
 You'll find more details in
 [Decision Maker API Docs](https://docs.trully.ai/reference/post_v1-decision-maker-predict)
-If you set a webhook, this is the data you'll be receiving
+If you have set a webhook, this is the data you'll be receiving
 
 | Key                            | Description                                                                                                                                                      |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
