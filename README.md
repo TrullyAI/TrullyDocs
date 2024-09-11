@@ -41,6 +41,7 @@ your decision-making process.
    3. [Add split android.play SplitCompatApplication to the App manifest](#3--add-split-androidplay-splitcompatapplication-to-the-app-manifest)
    4. [Move DocumentReaderFullAuth dependencies to your new module](#4--move-documentreaderfullauth-dependencies-to-your-new-module-buildgradle)
    5. [Configure an Activity to init the download](#5--configure-an-activity-to-init-the-download)
+8. [Demos](#demos)
 
 ## Add TrullySDK repository and dependencies
 
@@ -1059,3 +1060,7 @@ class MainActivity : AppCompatActivity(), TrullyListeners, SplitInstallStateUpda
     }
 }
 ```
+
+## Demos
+
+#### [SDK implementation using Activities](https://github.com/TrullyAI/SDKDemoActivities)
