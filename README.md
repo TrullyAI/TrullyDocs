@@ -755,8 +755,8 @@ If you have set a webhook, this is the data you'll be receiving
 
         //Images - base64 string
         Log.d("TRULLY_SDK", response.image.toString())
-        Log.d("TRULLY_SDK", response.images.document_image.toString())
-        Log.d("TRULLY_SDK", response.images.document_image_complete.toString())
+        Log.d("TRULLY_SDK", response.document_image.toString())
+        Log.d("TRULLY_SDK", response.document_image_complete.toString())
         Log.d("TRULLY_SDK", response.document_image_back.toString())
         Log.d("TRULLY_SDK", response.document_image_back_complete.toString())
     }
