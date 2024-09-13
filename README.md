@@ -764,7 +764,7 @@ You'll find more details in
 #### Receiving data with webhook
 
 If you prefer it is possible to set a webhook url to receive the Decision Maker
-response (raw_data). To do it, add webhook parameter to the TrullyConfig object
+response. To do it, add webhook parameter to the TrullyConfig object
 
 #### Example
 
