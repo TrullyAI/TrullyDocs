@@ -3,7 +3,7 @@
 TrullyWebSDK is an identity validation component designed to be integrated into
 your decision-making process.
 
-# Table of Contents
+## Table of Contents
 
 1. [Add TrullySDK repository and dependencies](#add-trullysdk-repository-and-dependencies)
    1. [Add jitpack as repository store in settings.gradle](#1--add-jitpack-as-repository-store-in-settingsgradle)
@@ -500,7 +500,6 @@ object will let you do that.
 | `tag`         | Valid uuid string. If you do not provide it, one will automatically generated.                                                |
 |               | This tag is used to link every image analysis run by this SDK                                                                 |
 | `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Optional. Default false |
-| `webhook`     | String. Set it to receive the SDK response on a webhook. Optional                                                             |
 | `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                                   |
 
 #### Example
@@ -510,7 +509,7 @@ object will let you do that.
     val styles: TrullyStyles = TrullyStyles()
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true, webhook = "YOUR_WEBHOOK_URL")
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -724,7 +723,6 @@ class MainActivity : AppCompatActivity(), TrullyListeners {
 
 You'll find more details in
 [Decision Maker API Docs](https://docs.trully.ai/reference/post_v1-decision-maker-predict)
-If you have set a webhook, this is the data you'll be receiving
 
 | Key                            | Description                                                                                                                                                      |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -761,6 +759,29 @@ If you have set a webhook, this is the data you'll be receiving
         Log.d("TRULLY_SDK", response.document_image_back.toString())
         Log.d("TRULLY_SDK", response.document_image_back_complete.toString())
     }
+```
+
+#### Receiving data with webhook
+
+If you prefer it is possible to set a webhook url to receive the Decision Maker
+response (raw_data). To do it, add webhook parameter to the TrullyConfig object
+
+#### Example
+
+```java
+  private fun initialize() {
+
+    //Set SDK configuration
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", webhook = "YOUR_WEBHOOK_URL")
+    //* For production environments use `Environment.RELEASE`.
+    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
+
+    //Initialize SDK
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
+
+    //Run SDK
+    TrullySdk.start(packageContext = this, listener = this)
+}
 ```
 
 ## How to know the app size
