@@ -16,14 +16,14 @@ your decision-making process.
 2. [Add it to your project](#add-it-to-youre-project)
    1. [Add Listeners](#add-listeners)
       1. [Configure back event](#configure-back-event)
-      2. [Configure SDK](#configure-sdk)
-      3. [Launch SDK](#launch-sdk)
-   2. [Complete Example with default styles](#complete-example-with-default-styles)
-   3. [Listeners data structure](#listeners-data-structure)
-      1. [onTrack](#ontrack)
-      2. [onTrackDetail](#ontrackdetail)
-      3. [onResult](#onresult)
-      4. [onError](#onerror)
+      2. [Listeners data structure](#listeners-data-structure)
+         1. [onTrack](#ontrack)
+         2. [onTrackDetail](#ontrackdetail)
+         3. [onResult](#onresult)
+         4. [onError](#onerror)
+   2. [Configure SDK](#configure-sdk)
+   3. [Launch SDK](#launch-sdk)
+   4. [Complete Example with default styles](#complete-example-with-default-styles)
 3. [Personalization](#personalization)
    1. [Example](#example)
    2. [Changing styles](#changing-styles)
@@ -34,6 +34,7 @@ your decision-making process.
 4. [Full Example](#full-example)
 5. [Reading Results](#reading-results)
    1. [Decision Maker Response](#decision-maker-response)
+   2. [Receiving data with webhook](#receiving-data-with-webhook)
 6. [How to know the app size](#how-to-know-the-app-size)
 7. [Shrinking App](#shrinking-app)
    1. [Create a new Dynamic Feature Module](#1--create-a-new-dynamic-feature-module)
@@ -289,94 +290,7 @@ should be redirected
 }
 ```
 
-### Configure SDK
-
-To configure the SDK you'll need to call the `init` method.
-
-| Parameter        | Description                                                                                            |
-| ---------------- | ------------------------------------------------------------------------------------------------------ |
-| `packageContext` | Is the context of your Application/Activity.                                                           |
-| `apiKey`         | You're client API_KEY. The SDK won't work without it.                                                  |
-| `config`         | Config object will pass the environment and the styles to the SDK. [<b>See more</b>](#personalization) |
-
-#### Example
-
-```java
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
-    //* For production environments use `Environment.RELEASE`. Required
-    //* userID will identify the user completing the process. Required
-
-    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
-```
-
-### Launch SDK
-
-To start the SDK you'll need to call the `start` method.
-
-| Parameter        | Description                                          |
-| ---------------- | ---------------------------------------------------- |
-| `packageContext` | Is the context of your Application/Activity.         |
-| `listener`       | Is the TrullyListeners of your Application/activity. |
-
-#### Example
-
-```java
-    TrullySdk.start(packageContext = this, listener = this)
-```
-
-### Complete Example with default styles
-
-```java
-import ai.trully.sdk.TrullySdk
-import ai.trully.sdk.configurations.TrullyConfig
-import ai.trully.sdk.models.Environment
-import ai.trully.sdk.models.ErrorData
-import ai.trully.sdk.models.TrackDetail
-import ai.trully.sdk.models.TrackStep
-import ai.trully.sdk.models.TrullyResponse
-import ai.trully.sdk.protocols.listeners.TrullyListeners
-
-class MainActivity : AppCompatActivity(), TrullyListeners {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        initialize()
-    }
-
-    override fun onResult(response: TrullyResponse) {
-        Log.d("onResult", response.toString())
-    }
-
-    override fun onTrack(trackStep: TrackStep) {
-        Log.d("onTrack", trackStep.toString())
-    }
-
-    override fun onTrackDetail(trackDetail: TrackDetail) {
-        Log.d("onTrackDetail", trackDetail.toString())
-    }
-
-    override fun onError(errorData: ErrorData) {
-        Log.d("onError", errorData.toString())
-    }
-
-
-    private fun initialize() {
-        //Set SDK configuration
-        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
-        //* For production environments use `Environment.RELEASE`. Required
-        //* userID will identify the user completing the process. Required
-
-        //Initialize SDK
-        TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
-
-        //Run SDK
-        TrullySdk.start(packageContext = this, listener = this)
-    }
-}
-```
-
-### Listeners data structure
+#### Listeners data structure
 
 Here you'll found the structures of the data received in each listener function
 
@@ -486,6 +400,93 @@ This listener function will be called in case of an error during the operation.
 | `GETTING_LOCATION`             | Process error obtaining location.                    |
 | `GETTING_LIVENESS`             | Process error analyzing liveness.                    |
 | `OBTAINING_DM_RESPONSE`        | HTTP error when getting Decision Maker response.     |
+
+### Configure SDK
+
+To configure the SDK you'll need to call the `init` method.
+
+| Parameter        | Description                                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------------ |
+| `packageContext` | Is the context of your Application/Activity.                                                           |
+| `apiKey`         | You're client API_KEY. The SDK won't work without it.                                                  |
+| `config`         | Config object will pass the environment and the styles to the SDK. [<b>See more</b>](#personalization) |
+
+#### Example
+
+```java
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
+    //* For production environments use `Environment.RELEASE`. Required
+    //* userID will identify the user completing the process. Required
+
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
+```
+
+### Launch SDK
+
+To start the SDK you'll need to call the `start` method.
+
+| Parameter        | Description                                          |
+| ---------------- | ---------------------------------------------------- |
+| `packageContext` | Is the context of your Application/Activity.         |
+| `listener`       | Is the TrullyListeners of your Application/activity. |
+
+#### Example
+
+```java
+    TrullySdk.start(packageContext = this, listener = this)
+```
+
+### Complete Example with default styles
+
+```java
+import ai.trully.sdk.TrullySdk
+import ai.trully.sdk.configurations.TrullyConfig
+import ai.trully.sdk.models.Environment
+import ai.trully.sdk.models.ErrorData
+import ai.trully.sdk.models.TrackDetail
+import ai.trully.sdk.models.TrackStep
+import ai.trully.sdk.models.TrullyResponse
+import ai.trully.sdk.protocols.listeners.TrullyListeners
+
+class MainActivity : AppCompatActivity(), TrullyListeners {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        initialize()
+    }
+
+    override fun onResult(response: TrullyResponse) {
+        Log.d("onResult", response.toString())
+    }
+
+    override fun onTrack(trackStep: TrackStep) {
+        Log.d("onTrack", trackStep.toString())
+    }
+
+    override fun onTrackDetail(trackDetail: TrackDetail) {
+        Log.d("onTrackDetail", trackDetail.toString())
+    }
+
+    override fun onError(errorData: ErrorData) {
+        Log.d("onError", errorData.toString())
+    }
+
+
+    private fun initialize() {
+        //Set SDK configuration
+        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
+        //* For production environments use `Environment.RELEASE`. Required
+        //* userID will identify the user completing the process. Required
+
+        //Initialize SDK
+        TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
+
+        //Run SDK
+        TrullySdk.start(packageContext = this, listener = this)
+    }
+}
+```
 
 ### Personalization
 
@@ -761,7 +762,7 @@ You'll find more details in
     }
 ```
 
-#### Receiving data with webhook
+### Receiving data with webhook
 
 If you prefer it is possible to set a webhook url to receive the Decision Maker
 response. To do it, add webhook parameter to the TrullyConfig object
