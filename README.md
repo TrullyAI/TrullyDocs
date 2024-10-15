@@ -231,6 +231,25 @@ dependencies {
     <uses-permission android:name="android.permission.CAMERA" />
 ```
 
+### 6.- Replace theme (Optional)
+
+If you have a custom app theme declared in the manifest file:
+
+```xml
+    <application
+	...
+        tools:replace="android:theme">
+```
+
+Please add this line to replace the themes and avoid compile configs:
+
+```xml
+    <application
+	...
+        android:theme="@style/Theme.TrullySdkExample"
+	... >
+```
+
 ## Add it to you're project
 
 ### Add Listeners
