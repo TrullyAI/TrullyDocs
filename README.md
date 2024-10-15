@@ -238,7 +238,8 @@ If you have a custom app theme declared in the manifest file:
 ```xml
     <application
 	...
-        tools:replace="android:theme">
+        android:theme="@style/Theme.your_theme"
+	... >
 ```
 
 Please add this line to replace the themes and avoid compile configs:
@@ -246,9 +247,9 @@ Please add this line to replace the themes and avoid compile configs:
 ```xml
     <application
 	...
-        android:theme="@style/Theme.TrullySdkExample"
-	... >
+        tools:replace="android:theme">
 ```
+
 
 ## Add it to you're project
 
