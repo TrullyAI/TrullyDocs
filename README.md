@@ -170,7 +170,7 @@ android {
 
 #### Without libraries system. Add the dependencies directly to the App level `build.gradle`
 
-##### Kotlin DSL
+##### Kotlin DSL (Use it until sdk version v3.1.0)
 
 ```groovy
 dependencies {
@@ -186,6 +186,26 @@ dependencies {
 ```groovy
 dependencies {
     implementation 'com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555'
+    implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
+    // Support for Java 8 features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5
+}
+```
+
+##### Kotlin DSL (Use it after sdk version v4.0.0)
+
+```groovy
+dependencies {
+    implementation("com.github.TrullyAI:TrullyKotlinSDK:latest") //change latest for the version number
+    // Support for Java 8 features
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+}
+```
+
+##### Groovy DSL
+
+```groovy
+dependencies {
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
     // Support for Java 8 features
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5
