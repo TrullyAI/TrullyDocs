@@ -777,7 +777,9 @@ You'll find more details in
 | `label`                        | String. The label generate by the Decision Maker for the user who has completed the process                                                                      |
 |                                | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk                                                                               |
 | `reason`                       | Array. Contains the reasons behind the decision                                                                                                                  |
-| `request_id`                   | String. ID created by the Decision Maker                                                                                                                         |
+| `request_id`
+| `ip`				 | String. Device IP captured on the SDK process (Only available after v4.2.2)											    |
+| `location`			 | Object containing the latitude and longitude captured on the SDK process (Only available after v4.2.2)							    |
 | `image`                        | Base64 string. Selfie                                                                                                                                            |
 | `document_image`               | Base64 string. Document front cropped                                                                                                                            |
 | `document_image_complete`      | Base64 string. Document front uncropped                                                                                                                          |
