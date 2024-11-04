@@ -170,7 +170,7 @@ android {
 
 #### Without libraries system. Add the dependencies directly to the App level `build.gradle`
 
-##### - Use it until sdk version v3.1.0
+##### * Use it until sdk version v3.1.0
 
 ###### Kotlin DSL
 
@@ -183,7 +183,7 @@ dependencies {
 }
 ```
 
-##### Groovy DSL
+###### Groovy DSL
 
 ```groovy
 dependencies {
@@ -194,7 +194,7 @@ dependencies {
 }
 ```
 
-##### - Use it after sdk version v4.0.0
+##### * Use it after sdk version v4.0.0
 
 ###### Kotlin DSL
 
@@ -206,7 +206,7 @@ dependencies {
 }
 ```
 
-##### Groovy DSL
+###### Groovy DSL
 
 ```groovy
 dependencies {
