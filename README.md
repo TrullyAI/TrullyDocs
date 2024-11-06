@@ -805,6 +805,13 @@ You'll find more details in
         Log.d("TRULLY_SDK", response.document_image_complete.toString())
         Log.d("TRULLY_SDK", response.document_image_back.toString())
         Log.d("TRULLY_SDK", response.document_image_back_complete.toString())
+
+	// IP (Only available after v4.2.2)
+	Log.d("TRULLY_SDK", response.ip.toString())
+
+	// Location (Only available after v4.2.2)
+	Log.d("TRULLY_SDK", response.location?.lat.toString())
+	Log.d("TRULLY_SDK", response.location?.lng.toString())
     }
 ```
 
