@@ -61,6 +61,10 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://jitpack.io")
         }
+
+        maven {
+            url = uri("https://maven-sdk.unico.run/sdk-mobile")
+        }
     }
 }
 ```
@@ -77,6 +81,10 @@ dependencyResolutionManagement {
 
         maven {
             url 'https://jitpack.io'
+        }
+
+        maven {
+            url 'https://maven-sdk.unico.run/sdk-mobile'
         }
     }
 }
@@ -121,13 +129,8 @@ Enable Jetpack Compose by adding the following to the android section
 android {
     compileOptions {
         // Support for Java 8 features
-        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    buildFeatures {
-        compose = true
     }
 
     composeOptions {
@@ -147,13 +150,8 @@ android {
 android {
     compileOptions {
         // Support for Java 8 features
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    buildFeatures {
-        compose true
     }
 
     composeOptions {
@@ -170,16 +168,13 @@ android {
 
 #### Without libraries system. Add the dependencies directly to the App level `build.gradle`
 
-##### IMPORTANT: Use it until sdk version v3.1.0
-
 ###### Kotlin DSL
 
 ```groovy
 dependencies {
-    implementation("com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555")
+    implementation("com.github.TrullyAI:DocumentReaderKotlin:1.4.2")
+    implementation("io.unico:capture:5.25.0")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:latest") //change latest for the version number
-    // Support for Java 8 features
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }
 ```
 
@@ -187,32 +182,9 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555'
+    implementation 'com.github.TrullyAI:DocumentReaderKotlin:1.4.2'
+    implementation 'io.unico:capture:5.25.0'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
-    // Support for Java 8 features
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5
-}
-```
-
-##### IMPORTANT: Use it after sdk version v4.0.0
-
-###### Kotlin DSL
-
-```groovy
-dependencies {
-    implementation("com.github.TrullyAI:TrullyKotlinSDK:latest") //change latest for the version number
-    // Support for Java 8 features
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-}
-```
-
-###### Groovy DSL
-
-```groovy
-dependencies {
-    implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
-    // Support for Java 8 features
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5
 }
 ```
 
@@ -222,13 +194,13 @@ dependencies {
 
 ```groovy
 [versions]
+docReader = "1.4.2"
+unico = "5.25.0"
 trully = "latest" //change latest for the version number
-docReader = "7.9.9555"
-desugaring = "1.1.5"
 
 [libraries]
-trully-doc = { group = "com.github.TrullyAI", name = "DocumentReaderFullAuth", version.ref = "docReader" }
-desugaring-library = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugaring" }
+trully-doc = { group = "com.github.TrullyAI", name = "DocumentReaderKotlin", version.ref = "docReader" }
+trully-unico = { group = "io.unico", name = "capture", version.ref = "unico" }
 trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.ref = "trully" }
 ```
 
@@ -236,9 +208,9 @@ trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.
 
 ```groovy
 dependencies {
-    implementation(libs.trully.sdk)
     implementation(libs.trully.doc)
-    coreLibraryDesugaring(libs.desugaring.library)
+    implementation(libs.trully.unico)
+    implementation(libs.trully.sdk)
 }
 ```
 
@@ -255,7 +227,7 @@ dependencies {
     <uses-permission android:name="android.permission.CAMERA" />
 ```
 
-### 6.- Replace theme (Optional)
+### 6.- Replace theme
 
 If you have a custom app theme declared in the manifest file:
 
@@ -263,17 +235,14 @@ If you have a custom app theme declared in the manifest file:
     <application
 	...
         android:theme="@style/Theme.your_theme"
+        ....
+        tools:replace="android:theme" - Add this line to replace the themes and avoid compile configs
 	... >
 ```
 
-Please add this line to replace the themes and avoid compile configs:
-
-```xml
-    <application
-	...
-        tools:replace="android:theme">
-```
-
+It is possible that some other theme related issues appear during compilation.
+Please, make sure to read the Logcat an add the corresponding data to the
+tools:replace.
 
 ## Add it to you're project
 
@@ -330,7 +299,6 @@ should be redirected
     override fun onLeaveFromStart() {
         Log.d("onLeaveFromStart", "Custom back action when the user back to the previous screen from the TrullySDK")
     }
-
 }
 ```
 
@@ -773,13 +741,14 @@ You'll find more details in
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `tag`                          | String. The tag from the process. Automatically generated when you didn't pass one through configuration prop                                                    |
 | `user_id`                      | String. The userID you passed with the TrullyConfig object                                                                                                       |
-| `raw_data`                     | Object containing the unprocessed data from the Decision Maker. You can learn more about [here](https://docs.trully.ai/reference/post_v1-decision-maker-predict) |
+| `request_id`                   | String. The ID generated bay the Decision Maker for the process.                                                                                                 |
 | `label`                        | String. The label generate by the Decision Maker for the user who has completed the process                                                                      |
 |                                | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk                                                                               |
 | `reason`                       | Array. Contains the reasons behind the decision                                                                                                                  |
-| `request_id`
-| `ip`				 | String. Device IP captured on the SDK process (Only available after v4.2.2)											    |
-| `location`			 | Object containing the latitude and longitude captured on the SDK process (Only available after v4.2.2)							    |
+| `raw_data`                     | Object containing the unprocessed data from the Decision Maker. You can learn more about [here](https://docs.trully.ai/reference/post_v1-decision-maker-predict) |
+| `ip`                           | String. Device IP captured on the SDK process (Only available after v4.2.2)                                                                                      |
+| `location`                     | Object containing the latitude and longitude captured on the SDK process (Only available after v4.2.2)                                                           |
+| `calculated_rfc`               | String. The RFC calculated from the document. Could be null (Only available after v4.4.0)                                                                        |
 | `image`                        | Base64 string. Selfie                                                                                                                                            |
 | `document_image`               | Base64 string. Document front cropped                                                                                                                            |
 | `document_image_complete`      | Base64 string. Document front uncropped                                                                                                                          |
@@ -806,12 +775,15 @@ You'll find more details in
         Log.d("TRULLY_SDK", response.document_image_back.toString())
         Log.d("TRULLY_SDK", response.document_image_back_complete.toString())
 
-	// IP (Only available after v4.2.2)
-	Log.d("TRULLY_SDK", response.ip.toString())
+        // IP (Only available after v4.2.2)
+        Log.d("TRULLY_SDK", response.ip.toString())
 
-	// Location (Only available after v4.2.2)
-	Log.d("TRULLY_SDK", response.location?.lat.toString())
-	Log.d("TRULLY_SDK", response.location?.lng.toString())
+        // Location (Only available after v4.2.2)
+        Log.d("TRULLY_SDK", response.location?.lat.toString())
+        Log.d("TRULLY_SDK", response.location?.lng.toString())
+
+        // Calculated RFC (Only available after v4.4.0)
+        Log.d("TRULLY_SDK", response.calculated_rfc.toString())
     }
 ```
 
@@ -882,259 +854,6 @@ result should be a single architecture bundle with the size your app will take
 on a user device
 
 ⚠️ Make sure to delete these configuration before creating the final package
-
-## Shrinking App
-
-To reduce the App download size you can implement Dynamic Feature Modules to
-generate an on-demand installation of **DocumentReaderFullAuth**
-
-⚠️ The .aab size will not be reduced but Google Play will manage the files so
-the download size will be reduced
-
-⚠️ Make sure to download the Dynamic Feature Module before initializing
-TrullySDK
-
-### 1.- Create a new Dynamic Feature Module
-
-You can create a new Dynamic Feature Module with Android Studio using **File >
-New > New Module** this will open a window. Select Dynamic Feature and choose a
-name for your module then click next. The next window will ask to create a
-Module Title and to choose how you would like to include the module. We
-recommend to choose **Do not include module at install-time (on-demand only)**
-because it will let you decide when you want to start the download. This action
-will generate some changes to your app
-
-#### `settings.gradle`
-
-```groovy
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-
-    repositories {
-        google()
-        mavenCentral()
-
-        maven {
-            url = uri("https://jitpack.io")
-        }
-    }
-}
-
-rootProject.name = "Your Application Name"
-include(":app")
-include(":your_module_name")
-```
-
-#### App level `build.gradle`
-
-```groovy
-android {
-    //...other configurations
-    dynamicFeatures += ":your_module_name"
-}
-```
-
-### 2.- Add android.play to the App level `build.gradle`
-
-#### Kotlin DSL
-
-```groovy
-dependencies {
-    implementation("com.google.android.play:core-ktx:1.8.1")
-}
-```
-
-#### Groovy DSL
-
-```groovy
-dependencies {
-    implementation 'com.google.android.play:core-ktx:1.8.1'
-}
-```
-
-### 3.- Add split android.play SplitCompatApplication to the App manifest
-
-```xml
-    <application
-        android:name="com.google.android.play.core.splitcompat.SplitCompatApplication"
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication"
-        tools:targetApi="31">
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-```
-
-### 4.- Move DocumentReaderFullAuth dependencies to your new module `build.gradle`
-
-#### App level `build.gradle` dependencies
-
-##### Kotlin DSL
-
-```groovy
-dependencies {
-    //android.play so we can use SplitCompat
-    implementation("com.google.android.play:core-ktx:1.8.1")
-
-    //SDK dependencies without DocumentReaderFullAuth and FaceCore
-    implementation("com.github.TrullyAI:TrullyKotlinSDK:version")
-}
-```
-
-##### Groovy DSL
-
-```groovy
-dependencies {
-    //android.play so we can use SplitCompat
-    implementation 'com.google.android.play:core-ktx:1.8.1'
-
-    //SDK dependencies without DocumentReaderFullAuth and FaceCore
-    implementation 'com.github.TrullyAI:TrullyKotlinSDK:version'
-}
-```
-
-#### Module level `build.gradle` dependencies
-
-##### Kotlin DSL
-
-```groovy
-dependencies {
-    implementation("com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555")
-}
-```
-
-##### Groovy DSL
-
-```groovy
-dependencies {
-    implementation 'com.github.TrullyAI:DocumentReaderFullAuth:7.9.9555'
-}
-```
-
-### 5.- Configure an Activity to init the download
-
-```java
-class MainActivity : AppCompatActivity(), TrullyListeners, SplitInstallStateUpdatedListener {
-    //variable to store the SplitInstallManager instance
-    private lateinit var installManager: SplitInstallManager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        //Generate SplitInstallManager instance
-        installManager = SplitInstallManagerFactory.create(applicationContext)
-        //Register Activity as listener
-        installManager.registerListener(this)
-
-        findViewById<Button>(R.id.launchTrully)
-            .setOnClickListener {
-                onTap()
-            }
-    }
-
-    //Start download
-    private fun onTap() {
-        installManager.startInstall(
-            SplitInstallRequest.newBuilder()
-                .addModule("your_module_name")
-                .build()
-        )
-    }
-
-    //Delete all unnecessary data when Activity is destroy
-    override fun onDestroy() {
-        installManager.unregisterListener(this)
-        installManager.deferredUninstall(listOf("your_module_name"))
-        super.onDestroy()
-    }
-
-    //Configure the actions for the different states
-    override fun onStateUpdate(state: SplitInstallSessionState) {
-        when (state.status()) {
-            //This state is required for every module larger than 10MB. You'll need it in this case
-            SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
-                installManager.startConfirmationDialogForResult(state, this, 123)
-                Toast.makeText(this, "Request State", Toast.LENGTH_SHORT).show()
-            }
-            SplitInstallSessionStatus.INSTALLED -> {
-                initialize()
-                Toast.makeText(this, "Install State", Toast.LENGTH_SHORT).show()
-            }
-            SplitInstallSessionStatus.FAILED -> {
-                Toast.makeText(this, "Failed State", Toast.LENGTH_SHORT).show()
-            }
-
-            SplitInstallSessionStatus.CANCELED -> {
-                Toast.makeText(this, "Canceled State", Toast.LENGTH_SHORT).show()
-            }
-
-            SplitInstallSessionStatus.CANCELING -> {
-                Toast.makeText(this, "Canceling State", Toast.LENGTH_SHORT).show()
-            }
-
-            SplitInstallSessionStatus.DOWNLOADED -> {
-                Toast.makeText(this, "Downloaded State", Toast.LENGTH_SHORT).show()
-            }
-
-            SplitInstallSessionStatus.DOWNLOADING -> {
-                Toast.makeText(this, "Downloading State", Toast.LENGTH_SHORT).show()
-            }
-
-            SplitInstallSessionStatus.INSTALLING -> {
-                Toast.makeText(this, "Installing State", Toast.LENGTH_SHORT).show()
-            }
-
-            SplitInstallSessionStatus.PENDING -> {
-                Toast.makeText(this, "Pending State", Toast.LENGTH_SHORT).show()
-            }
-
-            SplitInstallSessionStatus.UNKNOWN -> {
-                Toast.makeText(this, "Unknown State", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    override fun onResult(response: TrullyResponse) {
-        Log.i("response", "finish")
-    }
-
-    override fun onTrack(trackStep: TrackStep) {
-        Log.d("onTrack", trackStep.toString())
-    }
-
-    override fun onTrackDetail(trackDetail: TrackDetail) {
-        Log.d("onTrackDetail", trackDetail.toString())
-    }
-
-    override fun onError(errorData: ErrorData) {
-        Log.d("onError", errorData.toString())
-    }
-
-    private fun initialize() {
-        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
-
-        //Initialize SDK
-        TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
-
-        //Run SDK
-        TrullySdk.start(packageContext = this, listener = this)
-    }
-}
-```
 
 ## Demos
 
