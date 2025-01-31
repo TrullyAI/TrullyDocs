@@ -44,6 +44,12 @@ your decision-making process.
    5. [Configure an Activity to init the download](#5--configure-an-activity-to-init-the-download)
 8. [Demos](#demos)
 
+#### ⚠️ Before start using the TrullySdk component we need to set some data on our server. Please contact us to ask for this set up. <br> We are going to need the following information
+
+|               | Description                        | Example          |
+| ------------- | ---------------------------------- | ---------------- |
+| `packageName` | You're app namespace/applicationId | com.trully.unico |
+
 ## Add TrullySDK repository and dependencies
 
 ### 1.- Add jitpack as repository store in `settings.gradle`
@@ -133,10 +139,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
-
     viewBinding {
         enable = true
     }
@@ -154,10 +156,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    composeOptions {
-    	kotlinCompilerExtensionVersion '1.5.1'
-    }
-
     viewBinding {
         enabled true
     }
@@ -172,7 +170,7 @@ android {
 
 ```groovy
 dependencies {
-    implementation("com.github.TrullyAI:DocumentReaderKotlin:1.4.2")
+    implementation("com.github.TrullyAI:DocumentReaderKotlin:latest") //change latest for the version number
     implementation("io.unico:capture:5.25.0")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:latest") //change latest for the version number
 }
@@ -182,7 +180,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.TrullyAI:DocumentReaderKotlin:1.4.2'
+    implementation 'com.github.TrullyAI:DocumentReaderKotlin:latest' //change latest for the version number
     implementation 'io.unico:capture:5.25.0'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
 }
@@ -194,7 +192,7 @@ dependencies {
 
 ```groovy
 [versions]
-docReader = "1.4.2"
+docReader = "latest" //change latest for the version number
 unico = "5.25.0"
 trully = "latest" //change latest for the version number
 
@@ -737,23 +735,23 @@ class MainActivity : AppCompatActivity(), TrullyListeners {
 You'll find more details in
 [Decision Maker API Docs](https://docs.trully.ai/reference/post_v1-decision-maker-predict)
 
-| Key                            | Description                                                                                                                                                      |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tag`                          | String. The tag from the process. Automatically generated when you didn't pass one through configuration prop                                                    |
-| `user_id`                      | String. The userID you passed with the TrullyConfig object                                                                                                       |
-| `request_id`                   | String. The ID generated bay the Decision Maker for the process.                                                                                                 |
-| `label`                        | String. The label generate by the Decision Maker for the user who has completed the process                                                                      |
-|                                | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk                                                                               |
-| `reason`                       | Array. Contains the reasons behind the decision                                                                                                                  |
-| `raw_data`                     | Object containing the unprocessed data from the Decision Maker. You can learn more about [here](https://docs.trully.ai/reference/post_v1-decision-maker-predict) |
-| `ip`                           | String. Device IP captured on the SDK process (Only available after v4.2.2)                                                                                      |
-| `location`                     | Object containing the latitude and longitude captured on the SDK process (Only available after v4.2.2)                                                           |
-| `calculated_rfc`               | String. The RFC calculated from the document. Could be null (Only available after v4.4.0)                                                                        |
-| `image`                        | Base64 string. Selfie                                                                                                                                            |
-| `document_image`               | Base64 string. Document front cropped                                                                                                                            |
-| `document_image_complete`      | Base64 string. Document front uncropped                                                                                                                          |
-| `document_image_back`          | Base64 string. Document back cropped                                                                                                                             |
-| `document_image_back_complete` | Base64 string. Document back uncropped                                                                                                                           |
+| Key                       | Description                                                                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tag`                     | String. The tag from the process. Automatically generated when you didn't pass one through configuration prop                                                    |
+| `user_id`                 | String. The userID you passed with the TrullyConfig object                                                                                                       |
+| `request_id`              | String. The ID generated bay the Decision Maker for the process.                                                                                                 |
+| `label`                   | String. The label generate by the Decision Maker for the user who has completed the process                                                                      |
+|                           | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk                                                                               |
+| `reason`                  | Array. Contains the reasons behind the decision                                                                                                                  |
+| `raw_data`                | Object containing the unprocessed data from the Decision Maker. You can learn more about [here](https://docs.trully.ai/reference/post_v1-decision-maker-predict) |
+| `ip`                      | String. Device IP captured on the SDK process (Only available after v4.2.2)                                                                                      |
+| `location`                | Object containing the latitude and longitude captured on the SDK process (Only available after v4.2.2)                                                           |
+| `calculated_rfc`          | String. The RFC calculated from the document. Could be null (Only available after v4.4.0)                                                                        |
+| `image`                   | Base64 string. Selfie                                                                                                                                            |
+| `document_image`          | Base64 string. Document front cropped                                                                                                                            |
+| `document_image_complete` | Base64 string. Document front uncropped                                                                                                                          |
+| `document_back`           | Base64 string. Document back cropped                                                                                                                             |
+| `document_back_complete`  | Base64 string. Document back uncropped                                                                                                                           |
 
 #### Example
 
@@ -772,8 +770,8 @@ You'll find more details in
         Log.d("TRULLY_SDK", response.image.toString())
         Log.d("TRULLY_SDK", response.document_image.toString())
         Log.d("TRULLY_SDK", response.document_image_complete.toString())
-        Log.d("TRULLY_SDK", response.document_image_back.toString())
-        Log.d("TRULLY_SDK", response.document_image_back_complete.toString())
+        Log.d("TRULLY_SDK", response.document_back.toString())
+        Log.d("TRULLY_SDK", response.document_back_complete.toString())
 
         // IP (Only available after v4.2.2)
         Log.d("TRULLY_SDK", response.ip.toString())
