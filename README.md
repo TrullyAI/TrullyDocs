@@ -217,12 +217,15 @@ dependencies {
 ```xml
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
+    // If you're app doesn't already have them. Please add the following permissions
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+    // If you're app doesn't need FINE_LOCATION, make sure to add this line so you remove our declaration from the final AndroidManifest.xml
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove" />
 ```
 
 ### 6.- Replace theme
@@ -237,6 +240,8 @@ If you have a custom app theme declared in the manifest file:
         tools:replace="android:theme" - Add this line to replace the themes and avoid compile configs
 	... >
 ```
+
+#### ⚠️
 
 It is possible that some other theme related issues appear during compilation.
 Please, make sure to read the Logcat an add the corresponding data to the
