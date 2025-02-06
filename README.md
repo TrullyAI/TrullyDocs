@@ -5,44 +5,62 @@ your decision-making process.
 
 ## Table of Contents
 
-1. [Add TrullySDK repository and dependencies](#add-trullysdk-repository-and-dependencies)
-   1. [Add jitpack as repository store in settings.gradle](#1--add-jitpack-as-repository-store-in-settingsgradle)
-   2. [Check compileSdk and minSdk](#2--check-compilesdk-and-minsdk)
-   3. [Add Jetpack Compose and ViewBinding](#3--add-jetpack-compose-and-viewbinding-on-your-app-level-buildgradle)
-   4. [Add dependencies](#4--add-dependencies)
-      1. [Without libraries system](#without-libraries-system-add-the-dependencies-directly-to-the-app-level-buildgradle)
-      2. [With libraries system](#with-libraries-system)
-   5. [Add permission in manifest](#5--add-permission-in-manifest)
-2. [Add it to your project](#add-it-to-youre-project)
-   1. [Add Listeners](#add-listeners)
-      1. [Configure back event](#configure-back-event)
-      2. [Listeners data structure](#listeners-data-structure)
-         1. [onTrack](#ontrack)
-         2. [onTrackDetail](#ontrackdetail)
-         3. [onResult](#onresult)
-         4. [onError](#onerror)
-   2. [Configure SDK](#configure-sdk)
-   3. [Launch SDK](#launch-sdk)
-   4. [Complete Example with default styles](#complete-example-with-default-styles)
-3. [Personalization](#personalization)
-   1. [Example](#example)
-   2. [Changing styles](#changing-styles)
-      1. [To configure texts](#to-configure-texts-use-the-uitexts-object)
-         1. [Texts enums](#texts-enums)
-      2. [Colors](#colors)
-      3. [Images](#images)
-4. [Full Example](#full-example)
-5. [Reading Results](#reading-results)
-   1. [Decision Maker Response](#decision-maker-response)
-   2. [Receiving data with webhook](#receiving-data-with-webhook)
-6. [How to know the app size](#how-to-know-the-app-size)
-7. [Shrinking App](#shrinking-app)
-   1. [Create a new Dynamic Feature Module](#1--create-a-new-dynamic-feature-module)
-   2. [Add android.play to the App level build.gradle](#2--add-androidplay-to-the-app-level-buildgradle)
-   3. [Add split android.play SplitCompatApplication to the App manifest](#3--add-split-androidplay-splitcompatapplication-to-the-app-manifest)
-   4. [Move DocumentReaderFullAuth dependencies to your new module](#4--move-documentreaderfullauth-dependencies-to-your-new-module-buildgradle)
-   5. [Configure an Activity to init the download](#5--configure-an-activity-to-init-the-download)
-8. [Demos](#demos)
+- [Add TrullySDK repository and dependencies](#add-trullysdk-repository-and-dependencies)
+  - [1.- Add jitpack as repository store in `settings.gradle`](#1-add-jitpack-as-repository-store-in-settingsgradle)
+    - [Kotlin DSL](#kotlin-dsl)
+    - [Groovy DSL](#groovy-dsl)
+  - [2.- Check compileSdk and minSdk](#2-check-compilesdk-and-minsdk)
+    - [Kotlin DSL](#kotlin-dsl-1)
+    - [Groovy DSL](#groovy-dsl-1)
+  - [3.- Add dependencies](#3-add-dependencies)
+    - [Without libraries system. Add the dependencies directly to the App level `build.gradle`](#without-libraries-system-add-the-dependencies-directly-to-the-app-level-buildgradle)
+      - [Kotlin DSL](#kotlin-dsl-2)
+      - [Groovy DSL](#groovy-dsl-2)
+    - [With libraries system.](#with-libraries-system)
+      - [1.- Add the dependencies info to the `libs.versions.toml` file](#1-add-the-dependencies-info-to-the-libsversionstoml-file)
+      - [2.- Add the library dependencies to your App level `build.gradle`](#2-add-the-library-dependencies-to-your-app-level-buildgradle)
+  - [4.- Check manifest permissions](#4-check-manifest-permissions)
+  - [5.- Replace theme](#5-replace-theme)
+- [Add it to you're project](#add-it-to-youre-project)
+  - [Add Listeners](#add-listeners)
+    - [Example](#example)
+    - [Configure back event](#configure-back-event)
+    - [Listeners data structure](#listeners-data-structure)
+      - [onTrack](#ontrack)
+        - [Example](#example-1)
+        - [Steps Table](#steps-table)
+      - [onTrackDetail](#ontrackdetail)
+        - [Example](#example-2)
+        - [Actions Table](#actions-table)
+      - [onResult](#onresult)
+      - [onError](#onerror)
+        - [Example](#example-3)
+        - [Process Table](#process-table)
+  - [Configure SDK](#configure-sdk)
+    - [Example](#example-4)
+  - [Launch SDK](#launch-sdk)
+    - [Example](#example-5)
+  - [Complete Example with default styles](#complete-example-with-default-styles)
+  - [Personalization](#personalization)
+    - [Example](#example-6)
+    - [Combine with other Decision Maker analysis](#combine-with-other-decision-maker-analysis)
+      - [Example](#example-7)
+    - [Changing styles](#changing-styles)
+      - [Colors](#colors)
+        - [Example](#example-8)
+      - [Images](#images)
+        - [Example](#example-9)
+  - [Full Example](#full-example)
+- [Reading Results](#results)
+  - [Decision Maker Response](#decision-maker-response)
+    - [Example](#example-10)
+  - [Receiving data with webhook](#receiving-data-with-webhook)
+    - [Example](#example-11)
+- [How to know the app size](#how-to-know-the-app-size)
+  - [1.- Configure the desired architecture build on your app level `build.gradle`](#1-configure-the-desired-architecture-build-on-your-app-level-buildgradle)
+    - [Kotlin DSL](#kotlin-dsl-3)
+    - [Groovy DSL](#groovy-dsl-3)
+  - [2.- Generate a signed App Bundle](#2-generate-a-signed-app-bundle)
 
 #### ⚠️ Before start using the TrullySdk component we need to set some data on our server. Please contact us to ask for this set up. <br> We are going to need the following information
 
@@ -67,10 +85,6 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://jitpack.io")
         }
-
-        maven {
-            url = uri("https://maven-sdk.unico.run/sdk-mobile")
-        }
     }
 }
 ```
@@ -87,10 +101,6 @@ dependencyResolutionManagement {
 
         maven {
             url 'https://jitpack.io'
-        }
-
-        maven {
-            url 'https://maven-sdk.unico.run/sdk-mobile'
         }
     }
 }
@@ -125,44 +135,7 @@ android {
 }
 ```
 
-### 3.- Add Jetpack Compose and ViewBinding on your App level `build.gradle`
-
-Enable Jetpack Compose by adding the following to the android section
-
-#### Kotlin DSL
-
-```groovy
-android {
-    compileOptions {
-        // Support for Java 8 features
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    viewBinding {
-        enable = true
-    }
-}
-
-```
-
-#### Groovy DSL
-
-```groovy
-android {
-    compileOptions {
-        // Support for Java 8 features
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    viewBinding {
-        enabled true
-    }
-}
-```
-
-### 4- Add dependencies
+### 3.- Add dependencies
 
 #### Without libraries system. Add the dependencies directly to the App level `build.gradle`
 
@@ -170,8 +143,6 @@ android {
 
 ```groovy
 dependencies {
-    implementation("com.github.TrullyAI:DocumentReaderKotlin:latest") //change latest for the version number
-    implementation("io.unico:capture:5.25.0")
     implementation("com.github.TrullyAI:TrullyKotlinSDK:latest") //change latest for the version number
 }
 ```
@@ -180,8 +151,6 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.github.TrullyAI:DocumentReaderKotlin:latest' //change latest for the version number
-    implementation 'io.unico:capture:5.25.0'
     implementation 'com.github.TrullyAI:TrullyKotlinSDK:latest' //change latest for the version number
 }
 ```
@@ -192,13 +161,9 @@ dependencies {
 
 ```groovy
 [versions]
-docReader = "latest" //change latest for the version number
-unico = "5.25.0"
 trully = "latest" //change latest for the version number
 
 [libraries]
-trully-doc = { group = "com.github.TrullyAI", name = "DocumentReaderKotlin", version.ref = "docReader" }
-trully-unico = { group = "io.unico", name = "capture", version.ref = "unico" }
 trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.ref = "trully" }
 ```
 
@@ -206,29 +171,20 @@ trully-sdk = { group = "com.github.TrullyAI", name = "TrullyKotlinSDK", version.
 
 ```groovy
 dependencies {
-    implementation(libs.trully.doc)
-    implementation(libs.trully.unico)
     implementation(libs.trully.sdk)
 }
 ```
 
-### 5.- Add permission in manifest
+### 4.- Check manifest permissions
 
 ```xml
     <uses-feature android:name="android.hardware.camera" android:required="true" />
-
-    // If you're app doesn't already have them. Please add the following permissions
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
     // If you're app doesn't need FINE_LOCATION, make sure to add this line so you remove our declaration from the final AndroidManifest.xml
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" tools:node="remove" />
 ```
 
-### 6.- Replace theme
+### 5.- Replace theme
 
 If you have a custom app theme declared in the manifest file:
 
@@ -262,7 +218,7 @@ members so you can have access to the process data.
 | `onError`          | Catch the errors of the operation.                                                       |
 | `onLeaveFromStart` | Optional. Set an action for the onBackPressed event for the initial view of the process. |
 
-#### Example
+##### Example
 
 ```java
 class MainActivity : AppCompatActivity(), TrullyListeners {
@@ -426,7 +382,7 @@ To configure the SDK you'll need to call the `init` method.
 | `apiKey`         | You're client API_KEY. The SDK won't work without it.                                                  |
 | `config`         | Config object will pass the environment and the styles to the SDK. [<b>See more</b>](#personalization) |
 
-#### Example
+##### Example
 
 ```java
     val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS")
@@ -445,7 +401,7 @@ To start the SDK you'll need to call the `start` method.
 | `packageContext` | Is the context of your Application/Activity.         |
 | `listener`       | Is the TrullyListeners of your Application/activity. |
 
-#### Example
+##### Example
 
 ```java
     TrullySdk.start(packageContext = this, listener = this)
@@ -509,23 +465,56 @@ The config object will allow to configure environment execution and change the
 styles. Also, for the process to work you need to pass a userID. The config
 object will let you do that.
 
-| Parameter     | Description                                                                                                                   |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Required                                               |
-| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Required                        |
-| `tag`         | Valid uuid string. If you do not provide it, one will automatically generated.                                                |
-|               | This tag is used to link every image analysis run by this SDK                                                                 |
-| `showIdView`  | Boolean. Set it to true if you want to ask your client to show their id while running the validation. Optional. Default false |
-| `styles`      | Styles object that will allow you to config color, logo and texts. Optional                                                   |
+| Parameter     | Description                                                                                            |
+| ------------- | ------------------------------------------------------------------------------------------------------ |
+| `environment` | Environment.DEBUG for development. Environment.RELEASE for production. Required                        |
+| `userID`      | Will allow you to link the process to an ID generate by you for better track of each process. Required |
+| `tag`         | The tag from the process. Automatically generated.                                                     |
+|               | This is used to link every image analysis run by this SDK                                              |
+| `styles`      | Styles object that will allow you to config color, logo and texts. Optional                            |
 
-#### Example
+##### Example
 
 ```java
   private fun initialize() {
     val styles: TrullyStyles = TrullyStyles()
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
+    //* For production environments use `Environment.RELEASE`.
+    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
+
+    //Initialize SDK
+    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
+
+    //Run SDK
+    TrullySdk.start(packageContext = this, listener = this)
+}
+```
+
+#### Combine with other Decision Maker analysis
+
+TrullySdk helps you to get a candidate data (by default you'll be collecting
+document image, location and selfie) so our Decision Maker can analyze it. But
+our Decision Maker could be used to analyze different data points and you may
+want to combine every Decision Maker response you get for every data point
+(learn more about Decision Maker on the
+[API Docs](https://trully.readme.io/reference/decisionmakerpredict)). You can
+join the response you get from the TrullySdk with others Decision Maker
+responses passing the request_id in the config object.
+
+| Key          | Description                                                          |
+| ------------ | -------------------------------------------------------------------- |
+| `request_id` | String. The id generated by the Decision Maker for any analysis run. |
+
+##### Example
+
+```java
+  private fun initialize() {
+    val styles: TrullyStyles = TrullyStyles()
+
+    //Set SDK configuration
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", request_id = "PREV_DM_REQUEST_ID")
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -539,42 +528,7 @@ object will let you do that.
 
 #### Changing styles
 
-Optionally you can change colors, texts and images. These are the default values
-
-##### To configure texts use the uiTexts object
-
-| Value     | Description                                                                       |
-| --------- | --------------------------------------------------------------------------------- |
-| `docType` | What type of document the user need to complete de process. One of the Texts enum |
-
-###### Texts enums
-
-| Parameter      | Value                   |
-| -------------- | ----------------------- |
-| `INE_PASSPORT` | INE o Pasaporte vigente |
-| `INE`          | INE vigente             |
-| `PASSPORT`     | Pasaporte vigente       |
-
-###### Example
-
-```java
-private fun initialize() {
-    val styles: TrullyStyles = TrullyStyles()
-
-    styles.uiTexts.docType = Texts.PASSPORT
-
-    //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
-    //* For production environments use `Environment.RELEASE`.
-    //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
-
-    //Initialize SDK
-    TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
-
-    //Run SDK
-    TrullySdk.start(packageContext = this, listener = this)
-}
-```
+Optionally you can change colors and images.
 
 ##### Colors
 
@@ -582,7 +536,7 @@ private fun initialize() {
 | ----------------- | ----------------------------------------------------- | ------- |
 | `primaryColor`    | Will change statusBar, button, icons and links color. | #475FFF |
 | `disabledColor`   | Will change button color when legal is not accepted.  | #D6A0FF |
-| `backgroundColor` | Will change button color when legal is not accepted.  | #FFFFFF |
+| `backgroundColor` | Will change app background color.                     | #FFFFFF |
 
 ###### Example
 
@@ -595,7 +549,7 @@ private fun initialize() {
     styles.backgroundColor = ai.trully.sdk.R.color.background
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -612,21 +566,21 @@ private fun initialize() {
 We are using the url to show you the images. Please, make sure you upload the
 images to your project and pass the corresponding drawable to the styles object
 
-| Key           | Value                                                                                 |
-| ------------- | ------------------------------------------------------------------------------------- |
-| `logo`        | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/logo.png                 |
-| `IDIcon`      | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID-1.svg                 |
-| `selfieIcon`  | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/Video-1.svg              |
-| `IDImage`     | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID2-1.svg                |
-| `permissions` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/modalcamera-andriod.svg  |
-| `light`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/luzIcon.svg              |
-| `cross`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/retirarElementosIcon.svg |
-| `showId`      | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pruebavida.svg           |
-| `check`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/icon-check.svg           |
-| `faceTimeout` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/rostrofail.svg           |
-| `noLocation`  | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pin-1.svg                |
-| `noCamera`    | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/cameraDenied-1.svg       |
-| `error`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/timeout.svg              |
+| Key           | Value                                                                                        |
+| ------------- | -------------------------------------------------------------------------------------------- |
+| `logo`        | https://trully-api-documentation.s3.us-east-1.amazonaws.com/trully-sdk/logo-trully-unico.svg |
+| `IDIcon`      | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID-1.svg                        |
+| `selfieIcon`  | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/Video-1.svg                     |
+| `IDImage`     | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/ID2-1.svg                       |
+| `permissions` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/modalcamera-andriod.svg         |
+| `light`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/luzIcon.svg                     |
+| `cross`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/retirarElementosIcon.svg        |
+| `showId`      | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pruebavida.svg                  |
+| `check`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/icon-check.svg                  |
+| `faceTimeout` | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/rostrofail.svg                  |
+| `noLocation`  | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/pin-1.svg                       |
+| `noCamera`    | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/cameraDenied-1.svg              |
+| `error`       | https://trully-api-documentation.s3.amazonaws.com/trully-sdk/timeout.svg                     |
 
 ###### Example
 
@@ -649,7 +603,7 @@ private fun initialize() {
     styles.errorIcon = ai.trully.sdk.R.drawable.timeouticon
 
     //Set SDK configuration
-    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
+    val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
     //* For production environments use `Environment.RELEASE`.
     //* We recommend using named arguments so the order doesn't matter. If you're not using them, this example shows the order you should pass the arguments.
 
@@ -722,7 +676,7 @@ class MainActivity : AppCompatActivity(), TrullyListeners {
     	styles.noCamera = ai.trully.sdk.R.drawable.camara
     	styles.errorIcon = ai.trully.sdk.R.drawable.timeouticon
 
-        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", tag = "VALID_UUID_STRING" , style = styles, showIdView = true)
+        val config = TrullyConfig(environment = Environment.DEBUG, userID = "YOUR_ID_FOR_THE_PROCESS", style = styles)
 
         //Initialize SDK
         TrullySdk.init(apiKey = "YOUR_API_KEY", config = config)
@@ -744,19 +698,26 @@ You'll find more details in
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `tag`                     | String. The tag from the process. Automatically generated when you didn't pass one through configuration prop                                                    |
 | `user_id`                 | String. The userID you passed with the TrullyConfig object                                                                                                       |
-| `request_id`              | String. The ID generated bay the Decision Maker for the process.                                                                                                 |
+| `raw_data`                | Object containing the unprocessed data from the Decision Maker. You can learn more about [here](https://docs.trully.ai/reference/post_v1-decision-maker-predict) |
+| `ip`                      | String. Device IP captured on the SDK process (Only available after v4.2.2)                                                                                      |
+| `location`\*              | Object containing the latitude and longitude captured on the SDK process (Only available after v4.2.2)                                                           |
+| `calculated_rfc`          | String. The RFC calculated from the document. Could be null (Only available after v4.4.0)                                                                        |
 | `label`                   | String. The label generate by the Decision Maker for the user who has completed the process                                                                      |
 |                           | No Threat - low risk user. Review - medium risk user. Potential Threat - high risk                                                                               |
 | `reason`                  | Array. Contains the reasons behind the decision                                                                                                                  |
-| `raw_data`                | Object containing the unprocessed data from the Decision Maker. You can learn more about [here](https://docs.trully.ai/reference/post_v1-decision-maker-predict) |
-| `ip`                      | String. Device IP captured on the SDK process (Only available after v4.2.2)                                                                                      |
-| `location`                | Object containing the latitude and longitude captured on the SDK process (Only available after v4.2.2)                                                           |
-| `calculated_rfc`          | String. The RFC calculated from the document. Could be null (Only available after v4.4.0)                                                                        |
+| `request_id`              | String. The ID generated bay the Decision Maker for the process.                                                                                                 |
 | `image`                   | Base64 string. Selfie                                                                                                                                            |
 | `document_image`          | Base64 string. Document front cropped                                                                                                                            |
 | `document_image_complete` | Base64 string. Document front uncropped                                                                                                                          |
 | `document_back`           | Base64 string. Document back cropped                                                                                                                             |
 | `document_back_complete`  | Base64 string. Document back uncropped                                                                                                                           |
+
+\* In order to make the process as smooth as possible for the user, after the
+permission is granted, the SDK will wait up to five seconds to retrieve
+location. If it is not possible, the SDK will let the user continue. Before the
+data is sent to the Decision Maker, it will try again to retrieve the location.
+The precess will never stop the user after they granted location permission.
+This means, it its possible to complete a process without location data.
 
 #### Example
 
@@ -857,7 +818,3 @@ result should be a single architecture bundle with the size your app will take
 on a user device
 
 ⚠️ Make sure to delete these configuration before creating the final package
-
-## Demos
-
-#### [SDK implementation using Activities](https://github.com/TrullyAI/SDKDemoActivities)
