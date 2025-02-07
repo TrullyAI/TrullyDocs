@@ -85,6 +85,10 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://jitpack.io")
         }
+
+        maven {
+            url = uri("https://maven-sdk.unico.run/sdk-mobile")
+        }
     }
 }
 ```
@@ -101,6 +105,10 @@ dependencyResolutionManagement {
 
         maven {
             url 'https://jitpack.io'
+        }
+
+        maven {
+            url 'https://maven-sdk.unico.run/sdk-mobile'
         }
     }
 }
